@@ -13,6 +13,7 @@ export default (args: ViteConfigInput) => {
   return defineConfig({
     plugins: [react(), tsConfigPaths()],
     server: {
+      port: 8080,
       proxy: {
         '/api': {
           target: 'http://localhost:8000',

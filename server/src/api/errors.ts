@@ -1,6 +1,5 @@
 export enum SignupError {
-  EMAIL_DUPLICATE = 'email.duplicate',
-  UNKNOWN = 'unknown'
+  EMAIL_DUPLICATE = 'email.duplicate'
 }
 
 export enum LoginError {
@@ -8,5 +7,10 @@ export enum LoginError {
 }
 
 export enum CommonError {
-  UNAUTHORIZED = 'unauthorized'
+  UNAUTHORIZED = 'unauthorized',
+  UNKNOWN = 'unknown'
+}
+
+export enum CreateProjectError {
+  NAME_DUPLICATE = 'name.duplicate'
 }

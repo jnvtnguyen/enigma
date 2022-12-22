@@ -8,6 +8,7 @@ import {
   BeforeUpdate
 } from 'typeorm';
 import moment from 'moment';
+import { Exclude } from 'class-transformer';
 
 import BaseModel from './BaseModel';
 import User from './User';
@@ -23,6 +24,7 @@ export default class Project extends BaseModel {
   @Column({ name: 'name' })
   public name: string;
 
+  @Exclude()
   @ManyToOne((type) => User, (user) => user.projects)
   @JoinColumn({ name: 'user_id' })
   public user: User;

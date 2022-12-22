@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { SignupState, SignupParams } from '@/types';
+import { SignupParams, SignupState } from '@/types';
 
 export const initialState: SignupState = {
   loading: false,

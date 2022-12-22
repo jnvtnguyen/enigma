@@ -30,6 +30,8 @@ function* loginSaga({ payload }: LoginAction): any {
       yield put(loginSuccess());
       yield put(authenticate(data.data));
 
+      window.location.replace(urls.project.listing);
+
       return;
     }
 

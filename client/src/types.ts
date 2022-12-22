@@ -1,6 +1,7 @@
 import { signup } from '@/slices/signup';
 import { login } from '@/slices/login';
 import { authenticate } from '@/slices/auth';
+import { fetchProjectsSuccess } from '@/slices/project';
 
 //Signup
 export interface SignupParams {
@@ -35,6 +36,25 @@ export interface User {
   modifiedDate?: string;
 }
 
+//Project
+export interface Project {
+  name: string;
+  createdDate?: string;
+  modifiedDate?: string;
+}
+
+export interface FetchProjectsFilters {
+  search?: string;
+}
+
+export interface FetchProjectsQuery {
+  filters: FetchProjectsFilters;
+}
+
+export interface FetchProjectsParams {
+  query: FetchProjectsQuery;
+}
+
 export interface AuthenticationData {
   accessToken?: string;
   user?: User;
@@ -60,11 +80,19 @@ export interface AuthState {
   user: User;
 }
 
+//Projects State
+export interface ProjectState {
+  projects: Project[];
+  loading: boolean;
+  error: string;
+}
+
 //Root
 export interface RootState {
   signupState: SignupState;
   loginState: LoginState;
   authState: AuthState;
+  projectState: ProjectState;
 }
 
 //Actions
@@ -84,4 +112,10 @@ export interface LoginAction {
 export interface AuthenticateAction {
   type: typeof authenticate.type;
   payload: AuthenticationData;
+}
+
+//Project
+export interface FetchProjectsAction {
+  type: typeof fetchProjectsSuccess.type;
+  payload: FetchProjectsParams;
 }

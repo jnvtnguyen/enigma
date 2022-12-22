@@ -11,6 +11,8 @@ const SignupLoadable = loadable(() => import('@/containers/Signup'));
 
 const LoginLoadable = loadable(() => import('@/containers/Login'));
 
+const ProjectsLoadable = loadable(() => import('@/containers/Projects'));
+
 const App: React.FC = () => {
   const { isAuthenticated } = useSelector(getAuthState);
 
@@ -30,7 +32,9 @@ const App: React.FC = () => {
           {!isAuthenticated ? (
             <Route path="*" element={<Navigate replace to="/login" />} />
           ) : (
-            <React.Fragment></React.Fragment>
+            <React.Fragment>
+              <Route path="/projects" element={<ProjectsLoadable />} />
+            </React.Fragment>
           )}
         </Routes>
       </Suspense>
