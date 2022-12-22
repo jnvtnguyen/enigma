@@ -1,0 +1,45 @@
+.spinner {
+  border-radius: 100%;
+  border-width: 2px;
+  border-style: solid;
+  border-image: initial;
+  display: inline-block;
+  animation: 0.75s linear 0s infinite normal both running spinning;
+}
+
+.large {
+  width: 58px;
+  height: 58px;
+}
+
+.medium {
+  width: 35px;
+  height: 35px;
+}
+
+.small {
+  width: 20px;
+  height: 20px;
+}
+
+.grey {
+  border-color: #808080 #808080 transparent;
+}
+
+.white {
+  border-color: #ffffff #ffffff transparent;
+}
+
+@keyframes spinning {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
