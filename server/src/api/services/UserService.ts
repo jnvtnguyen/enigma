@@ -11,7 +11,7 @@ export default class UserService {
     private readonly userRepository: UserRepository
   ) {}
 
-  public async findOneByEmail(email: string): Promise<any> {
+  public async findOneByEmail(email: string): Promise<User> {
     const user = await this.userRepository.findOne({
       where: {
         email: email

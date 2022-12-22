@@ -6,3 +6,7 @@ export enum SignupError {
 export enum LoginError {
   INCORRECT_EMAIL_PASSWORD = 'incorrect_email_password'
 }
+
+export enum CommonError {
+  UNAUTHORIZED = 'unauthorized'
+}

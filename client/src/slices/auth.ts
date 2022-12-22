@@ -7,11 +7,11 @@ let authenticationData: AuthenticationData;
 if (sessionStorage.getItem('user')) {
   authenticationData = JSON.parse(sessionStorage.getItem('user'));
 } else {
-  authenticationData = { user: null, accessToken: null };
+  authenticationData = { user: undefined, accessToken: undefined };
 }
 
 const { user: initialUser, accessToken: initialAccessToken } = authenticationData;
-const initialIsAuthenticated = initialAccessToken != null;
+const initialIsAuthenticated = initialAccessToken != undefined;
 
 export const initialState: AuthState = {
   isAuthenticated: initialIsAuthenticated,

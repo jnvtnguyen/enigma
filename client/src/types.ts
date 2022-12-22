@@ -36,8 +36,8 @@ export interface User {
 }
 
 export interface AuthenticationData {
-  accessToken: string;
-  user: User;
+  accessToken?: string;
+  user?: User;
 }
 
 //State

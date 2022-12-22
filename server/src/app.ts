@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import environment from '@/environment';
 import UserModule from '@/api/modules/UserModule';
+import ProjectsModule from '@/api/modules/ProjectsModule';
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import UserModule from '@/api/modules/UserModule';
       entities: [environment.directories.entities],
       migrations: [environment.directories.migrations]
     }),
-    UserModule
+    UserModule,
+    ProjectsModule
   ]
 })
 export default class App {}

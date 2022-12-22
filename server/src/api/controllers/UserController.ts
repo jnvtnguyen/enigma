@@ -1,4 +1,5 @@
 import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Response } from 'express';
 import { instanceToPlain } from 'class-transformer';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto-js';
@@ -14,10 +15,16 @@ import environment from '@/environment';
 
 @Controller('user')
 export default class UserController {
-  constructor(private userService: UserService, private accessTokenService: AccessTokenService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly accessTokenService: AccessTokenService
+  ) {}
 
   @Post('/signup')
-  public async signup(@Body() signupRequest: SignupRequest, @Res() response: any): Promise<any> {
+  public async signup(
+    @Body() signupRequest: SignupRequest,
+    @Res() response: Response
+  ): Promise<any> {
     const user: User = await this.userService.findOneByEmail(signupRequest.email);
 
     if (user) {
@@ -52,7 +59,7 @@ export default class UserController {
   }
 
   @Post('/login')
-  public async login(@Body() loginRequest: LoginRequest, @Res() response: any): Promise<any> {
+  public async login(@Body() loginRequest: LoginRequest, @Res() response: Response): Promise<any> {
     console.log(loginRequest);
     const user: User = await this.userService.findOneByEmail(loginRequest.email);
 
