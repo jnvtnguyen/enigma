@@ -3,7 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Like } from 'typeorm';
 
 import Project from '@/api/models/Project';
+import ProjectUser from '@/api/models/ProjectUser';
 import ProjectRepository from '@/api/repositories/ProjectRepository';
+import ProjectUserRepository from '@/api/repositories/ProjectUserRepository';
 
 export interface ProjectsQuery {
   search?: string;
@@ -13,14 +15,14 @@ export interface ProjectsQuery {
 export default class ProjectService {
   constructor(
     @InjectRepository(Project)
-    private readonly projectRepository: ProjectRepository
+    private readonly projectRepository: ProjectRepository,
+    @InjectRepository(ProjectUser)
+    private readonly projectUserRepository: ProjectUserRepository
   ) {}
 
   public async projects(userId: number, query: ProjectsQuery): Promise<Project[]> {
     let where: any = {
-      user: {
-        id: userId
-      }
+      ownerId: userId
     };
 
     if (query.search) {
@@ -31,18 +33,15 @@ export default class ProjectService {
     }
 
     const projects = await this.projectRepository.find({
-      relations: ['user'],
       where: where
     });
 
     return projects;
   }
 
-  public async findByUser(userId: number, name?: string): Promise<Project[]> {
+  public async findByOwner(userId: number, name?: string): Promise<Project[]> {
     let where: any = {
-      user: {
-        id: userId
-      }
+      ownerId: userId
     };
 
     if (name) {
@@ -53,7 +52,6 @@ export default class ProjectService {
     }
 
     const projects = await this.projectRepository.find({
-      relations: ['user'],
       where: where
     });
 
@@ -62,6 +60,13 @@ export default class ProjectService {
 
   public async create(project: Project): Promise<Project> {
     const newProject = await this.projectRepository.save(project);
+
+    const newProjectUser = new ProjectUser();
+    newProjectUser.projectId = newProject.id;
+    newProjectUser.userId = project.ownerId;
+    newProjectUser.projectPermission = 'admin';
+
+    await this.projectUserRepository.save(newProjectUser);
     return newProject;
   }
 }

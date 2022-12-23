@@ -39,6 +39,7 @@ export interface User {
 //Project
 export interface Project {
   name: string;
+  ownerId: number;
   createdDate?: string;
   modifiedDate?: string;
 }

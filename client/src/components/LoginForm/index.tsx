@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UilExclamationCircle } from '@iconscout/react-unicons';
+import { useTranslation } from 'react-i18next';
 
 import { LoginError } from '@/types';
 import urls from '@/util/urls';
@@ -26,6 +27,8 @@ interface FieldErrors {
 }
 
 const LoginForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
+  const { t } = useTranslation();
+
   const [fields, setFields] = useState<Fields>({
     email: '',
     password: ''
@@ -42,7 +45,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
     if (fields.email == '') {
       setFieldErrors((prevState) => ({
         ...prevState,
-        email: 'Please enter your email.'
+        email: t('Please enter your email.')
       }));
       valid = false;
     } else if (
@@ -52,7 +55,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
     ) {
       setFieldErrors((prevState) => ({
         ...prevState,
-        email: 'Please enter a valid email.'
+        email: t('Please enter a valid email.')
       }));
       valid = false;
     }
@@ -60,7 +63,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
     if (fields.password == '') {
       setFieldErrors((prevState) => ({
         ...prevState,
-        password: 'Please enter your password.'
+        password: t('Please enter your password.')
       }));
       valid = false;
     }
@@ -118,8 +121,8 @@ const LoginForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
 
       <Input
         name={'email'}
-        label={'Email'}
-        placeholder={'Email'}
+        label={t('Email')}
+        placeholder={t('Email')}
         value={fields.email}
         onChange={handleChange}
         onKeyUp={handleKeyUp}
@@ -131,8 +134,8 @@ const LoginForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
       <Input
         name={'password'}
         type={'password'}
-        label={'Password'}
-        placeholder={'Password'}
+        label={t('Password')}
+        placeholder={t('Password')}
         value={fields.password}
         onChange={handleChange}
         onKeyUp={handleKeyUp}
@@ -143,7 +146,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
 
       <div className={styles.buttonWrapper}>
         <Button type="submit">
-          {loading ? <Spinner variant={'white'} size={'small'} /> : 'Login'}
+          {loading ? <Spinner variant={'white'} size={'small'} /> : t('Login')}
         </Button>
       </div>
     </form>

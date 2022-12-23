@@ -62,9 +62,6 @@ export default class User extends BaseModel {
   @OneToMany((type) => AccessToken, (accessToken) => accessToken.user)
   public accessTokens: AccessToken[];
 
-  @OneToMany((type) => Project, (project) => project.user)
-  public projects: Project[];
-
   @BeforeInsert()
   public async beforeInsert(): Promise<void> {
     this.password = await User.hashPassword(this.password);

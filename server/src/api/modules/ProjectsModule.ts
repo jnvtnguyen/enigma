@@ -8,9 +8,10 @@ import ProjectsController from '@/api/controllers/ProjectsController';
 import AuthService from '@/api/services/AuthService';
 import AccessToken from '@/api/models/AccessToken';
 import User from '@/api/models/User';
+import ProjectUser from '@/api/models/ProjectUser';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Project, User, AccessToken])],
+  imports: [TypeOrmModule.forFeature([Project, User, AccessToken, ProjectUser])],
   providers: [ProjectService, AuthService],
   controllers: [ProjectsController],
   exports: []

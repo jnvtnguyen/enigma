@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import cn from 'classnames';
 import { UilCheckCircle, UilExclamationCircle } from '@iconscout/react-unicons';
+import { useTranslation } from 'react-i18next';
 
 import styles from './styles.module.scss';
 
@@ -17,6 +18,8 @@ interface PasswordStrengthLevels {
 }
 
 const PasswordStrength: React.FC<Props> = ({ password, onPasswordStrengthChange }) => {
+  const { t } = useTranslation();
+
   const [passwordStrengthLevels, setPasswordStrengthLevels] = useState<PasswordStrengthLevels>({
     length: false,
     upperLowerCase: false,
@@ -89,7 +92,7 @@ const PasswordStrength: React.FC<Props> = ({ password, onPasswordStrengthChange 
           <UilExclamationCircle size={'12'} color={'#f25f25'} />
         )}
         <span className={cn(styles.message, passwordStrengthLevels.length && styles.valid)}>
-          Use 8 or more characters
+          {t('Use 8 or more characters')}
         </span>
       </div>
       <div className={styles.messageContainer}>
@@ -99,7 +102,7 @@ const PasswordStrength: React.FC<Props> = ({ password, onPasswordStrengthChange 
           <UilExclamationCircle size={'12'} color={'#f25f25'} />
         )}
         <span className={cn(styles.message, passwordStrengthLevels.upperLowerCase && styles.valid)}>
-          Use upper and lower case letters (e.g. aA)
+          {t('Use upper and lower case letters (e.g. aA)')}
         </span>
       </div>
       <div className={styles.messageContainer}>
@@ -109,7 +112,7 @@ const PasswordStrength: React.FC<Props> = ({ password, onPasswordStrengthChange 
           <UilExclamationCircle size={'12'} color={'#f25f25'} />
         )}
         <span className={cn(styles.message, passwordStrengthLevels.number && styles.valid)}>
-          Use a number (e.g. 1234)
+          {t('Use a number (e.g. 1234)')}
         </span>
       </div>
       <div className={styles.messageContainer}>
@@ -119,7 +122,7 @@ const PasswordStrength: React.FC<Props> = ({ password, onPasswordStrengthChange 
           <UilExclamationCircle size={'12'} color={'#f25f25'} />
         )}
         <span className={cn(styles.message, passwordStrengthLevels.symbol && styles.valid)}>
-          Use a symbol (e.g. !@#$)
+          {t('Use a symbol (e.g. !@#$)')}
         </span>
       </div>
     </div>

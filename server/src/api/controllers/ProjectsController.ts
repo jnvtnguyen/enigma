@@ -30,6 +30,7 @@ export default class ProjectsController {
 
       return response.send(successResponse);
     } catch (error) {
+      console.error(error);
       const errorResponse = {
         error: CommonError.UNKNOWN,
         errorMessage: error
@@ -46,7 +47,7 @@ export default class ProjectsController {
     @Res() response: Response
   ): Promise<any> {
     try {
-      const project = await this.projectService.findByUser(
+      const project = await this.projectService.findByOwner(
         request.user.id,
         createProjectRequest.name
       );
@@ -60,7 +61,7 @@ export default class ProjectsController {
       }
 
       const newProject = new Project();
-      newProject.userId = request.user.id;
+      newProject.ownerId = request.user.id;
       newProject.name = createProjectRequest.name;
 
       const createProjectResponse = await this.projectService.create(newProject);
@@ -80,6 +81,7 @@ export default class ProjectsController {
 
       return response.status(200).send(successResponse);
     } catch (error) {
+      console.error(error);
       const errorResponse = {
         error: CommonError.UNKNOWN,
         errorMessage: error

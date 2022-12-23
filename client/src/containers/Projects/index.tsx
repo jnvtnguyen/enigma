@@ -1,6 +1,7 @@
 import React, { useMemo, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import qs from 'qs';
 
 import { getProjectState } from '@/selectors';
@@ -8,6 +9,7 @@ import { fetchProjects } from '@/slices/project';
 import { FetchProjectsQuery } from '@/types';
 import history from '@/util/history';
 import { parseQuery, toQueryParams } from './query';
+import PageMeta from '@/components/PageMeta';
 
 //Projects Query Hook
 interface UseProjectsQuery {
@@ -36,6 +38,8 @@ export const useProjectsQuery = (): UseProjectsQuery => {
 };
 
 const Projects: React.FC = () => {
+  const { t } = useTranslation();
+
   const { projects, loading, error } = useSelector(getProjectState);
 
   const dispatch = useDispatch();
@@ -48,7 +52,11 @@ const Projects: React.FC = () => {
     _fetchProjects(query);
   }, []);
 
-  return <React.Fragment></React.Fragment>;
+  return (
+    <React.Fragment>
+      <PageMeta title={t('Projects')} />
+    </React.Fragment>
+  );
 };
 
 export default Projects;

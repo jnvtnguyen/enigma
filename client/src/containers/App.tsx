@@ -1,11 +1,21 @@
 import React, { Suspense } from 'react';
-import { Helmet } from 'react-helmet';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import loadable from '@loadable/component';
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
 
 import LoadingPage from '@/components/LoadingPage';
 import { getAuthState } from '@/selectors';
+
+i18n.use(initReactI18next).init({
+  resources: {},
+  lng: 'en',
+  fallbackLng: 'en',
+  interpolation: {
+    escapeValue: false
+  }
+});
 
 const SignupLoadable = loadable(() => import('@/containers/Signup'));
 
@@ -18,9 +28,6 @@ const App: React.FC = () => {
 
   return (
     <React.Fragment>
-      <Helmet>
-        <title>Grocery List</title>
-      </Helmet>
       <Suspense fallback={<LoadingPage />}>
         <Routes>
           {!isAuthenticated && (

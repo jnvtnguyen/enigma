@@ -1,31 +1,38 @@
 import {
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
   Column,
+  Entity,
+  ManyToOne,
+  JoinColumn,
+  PrimaryGeneratedColumn,
   BeforeInsert,
   BeforeUpdate
 } from 'typeorm';
+import { Exclude } from 'class-transformer';
 import moment from 'moment';
 
 import BaseModel from './BaseModel';
-import User from './User';
+import Project from './Project';
 
-@Entity('access_token')
-export default class AccessToken extends BaseModel {
+export type ProjectPermission = 'read' | 'write' | 'admin';
+
+@Entity('project_user')
+export default class ProjectUser extends BaseModel {
   @PrimaryGeneratedColumn({ name: 'id' })
   public id: number;
 
   @Column({ name: 'user_id' })
   public userId: number;
 
-  @Column({ name: 'token' })
-  public token: string;
+  @Column({ name: 'project_id' })
+  public projectId: number;
 
-  @ManyToOne((type) => User)
-  @JoinColumn({ name: 'user_id' })
-  public user: User;
+  @Exclude()
+  @ManyToOne((type) => Project)
+  @JoinColumn({ name: 'project_id' })
+  public project: Project;
+
+  @Column({ name: 'project_permission' })
+  public projectPermission: ProjectPermission;
 
   @BeforeInsert()
   public async beforeInsert() {

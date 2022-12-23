@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { SignupError } from '@/types';
 import Input from '@/components/Input';
@@ -30,6 +31,8 @@ interface FieldErrors {
 }
 
 const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
+  const { t } = useTranslation();
+
   const [fields, setFields] = useState<Fields>({
     firstName: '',
     lastName: '',
@@ -55,7 +58,7 @@ const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
     if (fields.firstName == '') {
       setFieldErrors((prevState) => ({
         ...prevState,
-        firstName: 'Please enter your first name.'
+        firstName: t('Please enter your first name.')
       }));
       valid = false;
     }
@@ -63,7 +66,7 @@ const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
     if (fields.lastName == '') {
       setFieldErrors((prevState) => ({
         ...prevState,
-        lastName: 'Please enter your last name.'
+        lastName: t('Please enter your last name.')
       }));
       valid = false;
     }
@@ -71,7 +74,7 @@ const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
     if (fields.email == '') {
       setFieldErrors((prevState) => ({
         ...prevState,
-        email: 'Please enter your email.'
+        email: t('Please enter your email.')
       }));
       valid = false;
     } else if (
@@ -81,26 +84,26 @@ const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
     ) {
       setFieldErrors((prevState) => ({
         ...prevState,
-        email: 'Please enter a valid email.'
+        email: t('Please enter a valid email.')
       }));
       valid = false;
     } else if (fields.email == emailSubmmited && error == SignupError.DUPLICATE_EMAIL) {
       setFieldErrors((prevState) => ({
         ...prevState,
-        email: 'This email is already in use. Please enter another email.'
+        email: t('This email is already in use. Please enter another email.')
       }));
     }
 
     if (fields.confirmPassword == '') {
       setFieldErrors((prevState) => ({
         ...prevState,
-        confirmPassword: 'Please confirm your password.'
+        confirmPassword: t('Please confirm your password.')
       }));
       valid = false;
     } else if (fields.confirmPassword != fields.password) {
       setFieldErrors((prevState) => ({
         ...prevState,
-        confirmPassword: 'Confirm password does not match your password.'
+        confirmPassword: t('Confirm password does not match your password.')
       }));
       valid = false;
     }
@@ -154,8 +157,8 @@ const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
     <form onSubmit={handleSubmit}>
       <Input
         name={'firstName'}
-        label={'First Name'}
-        placeholder={'First Name'}
+        label={t('First Name')}
+        placeholder={t('First Name')}
         value={fields.firstName}
         onChange={handleChange}
         onKeyUp={handleKeyUp}
@@ -167,8 +170,8 @@ const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
 
       <Input
         name={'lastName'}
-        label={'Last Name'}
-        placeholder={'Last Name'}
+        label={t('Last Name')}
+        placeholder={t('Last Name')}
         value={fields.lastName}
         onChange={handleChange}
         onKeyUp={handleKeyUp}
@@ -179,8 +182,8 @@ const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
 
       <Input
         name={'email'}
-        label={'Email'}
-        placeholder={'Email'}
+        label={t('Email')}
+        placeholder={t('Email')}
         value={fields.email}
         onChange={handleChange}
         onKeyUp={handleKeyUp}
@@ -192,8 +195,8 @@ const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
       <Input
         name={'password'}
         type={'password'}
-        label={'Password'}
-        placeholder={'Password'}
+        label={t('Password')}
+        placeholder={t('Password')}
         value={fields.password}
         onChange={handleChange}
         onKeyUp={handleKeyUp}
@@ -213,8 +216,8 @@ const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
       <Input
         name={'confirmPassword'}
         type={'password'}
-        label={'Confirm Password'}
-        placeholder={'Confirm Password'}
+        label={t('Confirm Password')}
+        placeholder={t('Confirm Password')}
         value={fields.confirmPassword}
         onChange={handleChange}
         onKeyUp={handleKeyUp}
@@ -225,7 +228,7 @@ const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
 
       <div className={styles.buttonWrapper}>
         <Button type="submit">
-          {loading ? <Spinner variant={'white'} size={'small'} /> : 'Sign Up'}
+          {loading ? <Spinner variant={'white'} size={'small'} /> : t('Sign Up')}
         </Button>
       </div>
     </form>

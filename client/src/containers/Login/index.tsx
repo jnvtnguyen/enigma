@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import PageMeta from '@/components/PageMeta';
 import LoginForm from '@/components/LoginForm';
@@ -10,6 +11,8 @@ import { getLoginState } from '@/selectors';
 import { clearError, login } from '@/slices/login';
 
 const Login: React.FC = () => {
+  const { t } = useTranslation();
+
   const { loading, error } = useSelector(getLoginState);
 
   const dispatch = useDispatch();
@@ -28,12 +31,12 @@ const Login: React.FC = () => {
 
   return (
     <React.Fragment>
-      <PageMeta title={'Login'} />
+      <PageMeta title={t('Login')} />
 
       <div className={authStyles.pageContainer}>
         <main className={authStyles.contentContainer}>
           <div>
-            <h1 className={authStyles.header}>Login</h1>
+            <h1 className={authStyles.header}>{t('Login')}</h1>
           </div>
           <LoginForm onSubmit={handleSubmit} loading={loading} error={error} />
           <div className={authStyles.bottom}>

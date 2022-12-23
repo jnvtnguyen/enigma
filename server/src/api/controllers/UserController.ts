@@ -58,6 +58,7 @@ export default class UserController {
         return response.status(400).send(errorResponse);
       }
     } catch (error) {
+      console.error(error);
       const errorResponse = {
         error: CommonError.UNKNOWN,
         errorMessage: error
@@ -102,6 +103,7 @@ export default class UserController {
 
       return response.status(400).send(errorResponse);
     } catch (error) {
+      console.error(error);
       const errorResponse = {
         error: CommonError.UNKNOWN,
         errorMessage: error
