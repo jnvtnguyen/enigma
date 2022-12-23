@@ -4,8 +4,10 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
   ManyToOne,
   OneToMany,
+  ManyToMany,
   PrimaryGeneratedColumn
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
@@ -15,7 +17,6 @@ import BaseModel from './BaseModel';
 import Project from './Project';
 import User from './User';
 import WorkspaceGroup from './WorkspaceGroup';
-import WorkspaceUser from './WorkspaceUser';
 
 @Entity('workspace')
 export default class Workspace extends BaseModel {
@@ -37,16 +38,29 @@ export default class Workspace extends BaseModel {
   public owner: User;
 
   @Exclude()
-  @OneToMany((type) => Project, (project) => project.workspace)
+  @OneToMany((type) => Project, (project: Project) => project.workspace, {
+    cascade: true
+  })
   public projects: Project[];
 
   @Exclude()
-  @OneToMany((type) => WorkspaceGroup, (workspaceGroup) => workspaceGroup.workspace)
+  @OneToMany(
+    (type) => WorkspaceGroup,
+    (workspaceGroup: WorkspaceGroup) => workspaceGroup.workspace,
+    {
+      cascade: true
+    }
+  )
   public groups: WorkspaceGroup[];
 
   @Exclude()
-  @OneToMany((type) => WorkspaceUser, (workspaceUser) => workspaceUser.workspace)
-  public users: WorkspaceUser[];
+  @ManyToMany((type) => User, (user: User) => user.workspaces)
+  @JoinTable({
+    name: 'workspaces_users',
+    joinColumns: [{ name: 'workspace_id' }],
+    inverseJoinColumns: [{ name: 'user_id' }]
+  })
+  public users: User[];
 
   @BeforeInsert()
   public async beforeInsert(): Promise<void> {

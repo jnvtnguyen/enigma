@@ -4,7 +4,9 @@ import {
   Column,
   Entity,
   OneToMany,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
+  ManyToMany,
+  JoinTable
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import bcrypt from 'bcrypt';
@@ -13,6 +15,7 @@ import moment from 'moment';
 import BaseModel from './BaseModel';
 import AccessToken from './AccessToken';
 import Workspace from './Workspace';
+import WorkspaceGroup from './WorkspaceGroup';
 
 @Entity('user')
 export default class User extends BaseModel {
@@ -62,6 +65,14 @@ export default class User extends BaseModel {
   @Exclude()
   @OneToMany((type) => AccessToken, (accessToken) => accessToken.user)
   public accessTokens: AccessToken[];
+
+  @Exclude()
+  @ManyToMany((type) => Workspace, (workspace) => workspace.users)
+  public workspaces: Workspace[];
+
+  @Exclude()
+  @ManyToMany((type) => WorkspaceGroup, (workspaceGroup) => workspaceGroup.users)
+  public groups: WorkspaceGroup[];
 
   @BeforeInsert()
   public async beforeInsert(): Promise<void> {

@@ -5,21 +5,18 @@ import Workspace from '@/api/models/Workspace';
 import WorkspaceRepository from '@/api/repositories/WorkspaceRepository';
 import WorkspaceGroup from '@/api/models/WorkspaceGroup';
 import WorkspaceGroupRepository from '@/api/repositories/WorkspaceGroupRepository';
-import WorkspaceGroupUserRepository from '@/api/repositories/WorkspaceGroupUserRepository';
-import WorkspaceGroupUser from '@/api/models/WorkspaceGroupUser';
-import WorkspaceUser from '@/api/models/WorkspaceUser';
+import User from '@/api/models/User';
+import UserRepository from '@/api/repositories/UserRepository';
 
 @Injectable()
 export default class WorkspaceService {
   constructor(
     @InjectRepository(Workspace)
     private readonly workspaceRepository: WorkspaceRepository,
-    @InjectRepository(WorkspaceUser)
-    private readonly workspaceUserRepository: WorkspaceUserRepository,
     @InjectRepository(WorkspaceGroup)
     private readonly workspaceGroupRepository: WorkspaceGroupRepository,
-    @InjectRepository(WorkspaceGroupUser)
-    private readonly workspaceGroupUserRepository: WorkspaceGroupUserRepository
+    @InjectRepository(User)
+    private readonly userRepository: UserRepository
   ) {}
 
   public async findAllWithUser(userId: number): Promise<Workspace[]> {}
@@ -51,28 +48,29 @@ export default class WorkspaceService {
   }
 
   public async create(workspace: Workspace): Promise<Workspace> {
+    const user = await this.userRepository.findOneBy({
+      id: workspace.ownerId
+    });
+
     const createWorkspaceResponse = await this.workspaceRepository.save(workspace);
 
     const newWorkspaceGroup = new WorkspaceGroup();
     newWorkspaceGroup.name = 'Administrators';
-    newWorkspaceGroup.workspaceId = workspace.id;
+    newWorkspaceGroup.workspaceId = createWorkspaceResponse.id;
     newWorkspaceGroup.default_permission = 'admin';
+
+    newWorkspaceGroup.users = [user];
 
     const createWorkspaceGroupResponse = await this.workspaceGroupRepository.save(
       newWorkspaceGroup
     );
 
-    const newWorkspaceUser = new WorkspaceUser();
-    newWorkspaceUser.userId = workspace.ownerId;
-    newWorkspaceUser.workspaceId = createWorkspaceResponse.id;
+    createWorkspaceResponse.groups = [createWorkspaceGroupResponse];
+    createWorkspaceResponse.users = [user];
 
-    const createWorkspaceUserResponse = await this.workspaceUserRepository.save(newWorkspaceUser);
+    console.log(createWorkspaceResponse);
 
-    const newWorkspaceGroupUser = new WorkspaceGroupUser();
-    newWorkspaceGroupUser.userId = createWorkspaceUserResponse.id;
-    newWorkspaceGroupUser.groupId = createWorkspaceGroupResponse.id;
-
-    await this.workspaceGroupUserRepository.save(newWorkspaceGroupUser);
+    await this.workspaceRepository.save(createWorkspaceResponse);
 
     return createWorkspaceResponse;
   }

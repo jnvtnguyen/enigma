@@ -4,16 +4,17 @@ import {
   BeforeUpdate,
   PrimaryGeneratedColumn,
   Column,
-  OneToMany,
   ManyToOne,
-  JoinColumn
+  JoinColumn,
+  ManyToMany,
+  JoinTable
 } from 'typeorm';
 import moment from 'moment';
 import { Exclude } from 'class-transformer';
 
 import BaseModel from './BaseModel';
 import { ProjectPermission } from './ProjectUser';
-import WorkspaceGroupUser from './WorkspaceGroupUser';
+import User from './User';
 import Workspace from './Workspace';
 
 @Entity('workspace_group')
@@ -31,8 +32,13 @@ export default class WorkspaceGroup extends BaseModel {
   public default_permission: ProjectPermission;
 
   @Exclude()
-  @OneToMany((type) => WorkspaceGroupUser, (workspaceGroupUser) => workspaceGroupUser.group)
-  public users: WorkspaceGroupUser[];
+  @ManyToMany((type) => User)
+  @JoinTable({
+    name: 'workspace_groups_users',
+    joinColumns: [{ name: 'group_id' }],
+    inverseJoinColumns: [{ name: 'user_id' }]
+  })
+  public users: User[];
 
   @Exclude()
   @ManyToOne((type) => Workspace, (workspace) => workspace.groups)
