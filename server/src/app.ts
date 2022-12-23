@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import environment from '@/environment';
 import UserModule from '@/api/modules/UserModule';
+import WorkspacesModule from '@/api/modules/WorkspacesModule';
 import ProjectsModule from '@/api/modules/ProjectsModule';
 
 @Module({
@@ -20,6 +21,7 @@ import ProjectsModule from '@/api/modules/ProjectsModule';
       migrations: [environment.directories.migrations]
     }),
     UserModule,
+    WorkspacesModule,
     ProjectsModule
   ]
 })

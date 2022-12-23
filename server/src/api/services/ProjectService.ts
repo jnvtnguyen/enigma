@@ -20,9 +20,9 @@ export default class ProjectService {
     private readonly projectUserRepository: ProjectUserRepository
   ) {}
 
-  public async projects(userId: number, query: ProjectsQuery): Promise<Project[]> {
+  public async projects(workspaceId: number, query: ProjectsQuery): Promise<Project[]> {
     let where: any = {
-      ownerId: userId
+      workspaceId: workspaceId
     };
 
     if (query.search) {
@@ -39,9 +39,13 @@ export default class ProjectService {
     return projects;
   }
 
-  public async findByOwner(userId: number, name?: string): Promise<Project[]> {
+  public async findOneByWorkspace(
+    workspaceId: number,
+    name?: string,
+    key?: string
+  ): Promise<Project> {
     let where: any = {
-      ownerId: userId
+      workspaceId: workspaceId
     };
 
     if (name) {
@@ -51,22 +55,29 @@ export default class ProjectService {
       };
     }
 
-    const projects = await this.projectRepository.find({
+    if (key) {
+      where = {
+        ...where,
+        key: key
+      };
+    }
+
+    const project = await this.projectRepository.findOne({
       where: where
     });
 
-    return projects;
+    return project;
   }
 
   public async create(project: Project): Promise<Project> {
-    const newProject = await this.projectRepository.save(project);
+    const createProjectResponse = await this.projectRepository.save(project);
 
     const newProjectUser = new ProjectUser();
-    newProjectUser.projectId = newProject.id;
+    newProjectUser.projectId = createProjectResponse.id;
     newProjectUser.userId = project.ownerId;
     newProjectUser.projectPermission = 'admin';
 
     await this.projectUserRepository.save(newProjectUser);
-    return newProject;
+    return createProjectResponse;
   }
 }

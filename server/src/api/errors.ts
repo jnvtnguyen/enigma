@@ -12,5 +12,11 @@ export enum CommonError {
 }
 
 export enum CreateProjectError {
-  NAME_DUPLICATE = 'name.duplicate'
+  NAME_DUPLICATE = 'name.duplicate',
+  KEY_DUPLICATE = 'key.duplicate'
+}
+
+export enum CreateWorkspaceError {
+  NAME_DUPLICATE = 'name.duplicate',
+  KEY_DUPLICATE = 'key.duplicate'
 }

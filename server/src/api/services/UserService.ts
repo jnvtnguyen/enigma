@@ -21,7 +21,8 @@ export default class UserService {
   }
 
   public async create(user: User): Promise<User> {
-    const newUser = await this.userRepository.save(user);
-    return newUser;
+    const createUserResponse = await this.userRepository.save(user);
+
+    return createUserResponse;
   }
 }

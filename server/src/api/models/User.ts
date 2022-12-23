@@ -12,9 +12,9 @@ import moment from 'moment';
 
 import BaseModel from './BaseModel';
 import AccessToken from './AccessToken';
-import Project from './Project';
+import Workspace from './Workspace';
 
-@Entity('users')
+@Entity('user')
 export default class User extends BaseModel {
   public static hashPassword(password: string): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -55,10 +55,11 @@ export default class User extends BaseModel {
   @Column({ name: 'email' })
   public email: string;
 
-  @Column({ name: 'password' })
   @Exclude()
+  @Column({ name: 'password' })
   public password: string;
 
+  @Exclude()
   @OneToMany((type) => AccessToken, (accessToken) => accessToken.user)
   public accessTokens: AccessToken[];
 

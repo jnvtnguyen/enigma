@@ -5,7 +5,8 @@ import {
   Column,
   BeforeInsert,
   BeforeUpdate,
-  OneToMany
+  OneToMany,
+  ManyToOne
 } from 'typeorm';
 import moment from 'moment';
 import { Exclude } from 'class-transformer';
@@ -13,6 +14,7 @@ import { Exclude } from 'class-transformer';
 import BaseModel from './BaseModel';
 import User from './User';
 import ProjectUser from './ProjectUser';
+import Workspace from './Workspace';
 
 @Entity('project')
 export default class Project extends BaseModel {
@@ -25,7 +27,19 @@ export default class Project extends BaseModel {
   @Column({ name: 'name' })
   public name: string;
 
+  @Column({ name: 'workspace_id' })
+  public workspace_id: number;
+
+  @Column({ name: 'key' })
+  public key: string;
+
   @Exclude()
+  @ManyToOne((type) => Workspace, (workspace) => workspace.projects)
+  @JoinColumn({ name: 'workspace_id' })
+  public workspace: Workspace;
+
+  @Exclude()
+  @ManyToOne((type) => User)
   @JoinColumn({ name: 'owner_id' })
   public owner: User;
 
