@@ -4,11 +4,10 @@ import {
   Column,
   Entity,
   JoinColumn,
-  JoinTable,
   ManyToOne,
   OneToMany,
-  ManyToMany,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
+  OneToOne
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import moment from 'moment';
@@ -17,11 +16,12 @@ import BaseModel from './BaseModel';
 import Project from './Project';
 import User from './User';
 import WorkspaceGroup from './WorkspaceGroup';
+import WorkspaceUser from './WorkspaceUser';
 
 @Entity('workspace')
 export default class Workspace extends BaseModel {
-  @PrimaryGeneratedColumn({ name: 'id' })
-  public id: number;
+  @PrimaryGeneratedColumn('uuid')
+  public id: string;
 
   @Column({ name: 'name' })
   public name: string;
@@ -29,8 +29,13 @@ export default class Workspace extends BaseModel {
   @Column({ name: 'key' })
   public key: string;
 
+  @Exclude()
   @Column({ name: 'owner_id' })
-  public ownerId: number;
+  public ownerId: string;
+
+  @Exclude()
+  @Column({ name: 'default_group_id', nullable: true })
+  public defaultGroupId: string;
 
   @Exclude()
   @ManyToOne((type) => User)
@@ -54,13 +59,17 @@ export default class Workspace extends BaseModel {
   public groups: WorkspaceGroup[];
 
   @Exclude()
-  @ManyToMany((type) => User, (user: User) => user.workspaces)
-  @JoinTable({
-    name: 'workspaces_users',
-    joinColumns: [{ name: 'workspace_id' }],
-    inverseJoinColumns: [{ name: 'user_id' }]
+  @OneToMany((type) => WorkspaceUser, (user: WorkspaceUser) => user.workspace, {
+    cascade: true
   })
-  public users: User[];
+  public users: WorkspaceUser[];
+
+  @Exclude()
+  @OneToOne((type) => WorkspaceGroup, {
+    nullable: true
+  })
+  @JoinColumn({ name: 'default_group_id' })
+  public defaultGroup: WorkspaceGroup;
 
   @BeforeInsert()
   public async beforeInsert(): Promise<void> {

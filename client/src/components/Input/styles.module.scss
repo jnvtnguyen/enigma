@@ -1,5 +1,8 @@
+$error-color: #f25f25;
+$border-color: #c1c5c8;
+
 .label {
-  color: #404040;
+  color: #474646;
   font-size: 14px;
   font-weight: 400;
   display: block;
@@ -7,8 +10,24 @@
   user-select: none;
 }
 
+.inputWrapper {
+  display: flex;
+}
+
+.inputPrefix {
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 3px 0px 0px 3px;
+  border: 1px solid $border-color;
+  border-right: 0px;
+  font-size: 1em;
+}
+
 .input {
-  border: 1px solid #c1c5c8;
+  border: 1px solid $border-color;
   border-radius: 3px;
   height: 46px;
   padding: 0 10px;
@@ -19,6 +38,10 @@
   max-width: 635px;
   box-sizing: border-box;
   font-family: inherit;
+}
+
+.inputWithPrefix {
+  border-radius: 0px 3px 3px 0px;
 }
 
 .full {
@@ -32,12 +55,12 @@
 }
 
 .error {
-  border-color: #f25f25;
+  border-color: $error-color;
 }
 
 .errorMessage {
   display: block;
-  color: #f25f25;
+  color: $error-color;
   margin: 0;
   padding: 0;
   font-size: 12px;
@@ -47,6 +70,11 @@
 
 .errorMessageVisible {
   animation: swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+.requiredSymbol {
+  color: $error-color;
+  margin-left: 2px;
 }
 
 @keyframes swing-in-top-fwd {

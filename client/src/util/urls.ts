@@ -21,9 +21,7 @@ const urls = {
   },
   login: '/login',
   signup: '/signup',
-  project: {
-    listing: '/projects'
-  }
+  landing: '/landing'
 };
 
 export default urls;

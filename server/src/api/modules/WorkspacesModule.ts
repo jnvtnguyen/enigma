@@ -7,11 +7,14 @@ import Workspace from '@/api/models/Workspace';
 import User from '@/api/models/User';
 import AccessToken from '@/api/models/AccessToken';
 import WorkspaceGroup from '@/api/models/WorkspaceGroup';
+import WorkspaceUser from '@/api/models/WorkspaceUser';
 import WorkspacesController from '@/api/controllers/WorkspacesController';
 import AuthMiddleware from '@/api/middleware/AuthMiddleware';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Workspace, User, AccessToken, WorkspaceGroup])],
+  imports: [
+    TypeOrmModule.forFeature([Workspace, User, AccessToken, WorkspaceUser, WorkspaceGroup])
+  ],
   providers: [WorkspaceService, AuthService],
   controllers: [WorkspacesController],
   exports: []

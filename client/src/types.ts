@@ -27,10 +27,11 @@ export enum LoginError {
 
 //Auth
 export interface User {
-  id?: number;
+  id?: string;
   email: string;
   firstName: string;
   lastName: string;
+  finishedLanding: boolean;
   password?: string;
   createdDate?: string;
   modifiedDate?: string;
@@ -39,7 +40,7 @@ export interface User {
 //Project
 export interface Project {
   name: string;
-  ownerId: number;
+  ownerId: string;
   createdDate?: string;
   modifiedDate?: string;
 }
@@ -90,10 +91,10 @@ export interface ProjectState {
 
 //Root
 export interface RootState {
-  signupState: SignupState;
-  loginState: LoginState;
-  authState: AuthState;
-  projectState: ProjectState;
+  signup: SignupState;
+  login: LoginState;
+  auth: AuthState;
+  project: ProjectState;
 }
 
 //Actions

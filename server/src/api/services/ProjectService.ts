@@ -40,7 +40,7 @@ export default class ProjectService {
   }
 
   public async findOneByWorkspace(
-    workspaceId: number,
+    workspaceId: string,
     name?: string,
     key?: string
   ): Promise<Project> {

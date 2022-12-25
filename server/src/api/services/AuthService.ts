@@ -32,8 +32,8 @@ export default class AuthService {
       if (!authorization) {
         return undefined;
       }
-      const userId = await this.decryptToken(authorization.split(' ')[1]);
-      return userId;
+      const decryptedUser = await this.decryptToken(authorization.split(' ')[1]);
+      return decryptedUser.id;
     }
   }
 
@@ -45,7 +45,7 @@ export default class AuthService {
         if (error) {
           return resolve(undefined);
         }
-        console.log(decodedToken);
+
         return resolve({ id: decodedToken.id });
       });
     });
@@ -74,7 +74,7 @@ export default class AuthService {
     return false;
   }
 
-  public async getUser(userId: number): Promise<User> {
+  public async getUser(userId: string): Promise<User> {
     const user = await this.userRepository.findOne({
       where: {
         id: userId

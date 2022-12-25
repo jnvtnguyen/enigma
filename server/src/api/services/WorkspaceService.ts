@@ -5,8 +5,8 @@ import Workspace from '@/api/models/Workspace';
 import WorkspaceRepository from '@/api/repositories/WorkspaceRepository';
 import WorkspaceGroup from '@/api/models/WorkspaceGroup';
 import WorkspaceGroupRepository from '@/api/repositories/WorkspaceGroupRepository';
-import User from '@/api/models/User';
-import UserRepository from '@/api/repositories/UserRepository';
+import WorkspaceUser from '@/api/models/WorkspaceUser';
+import WorkspaceUserRepository from '@/api/repositories/WorkspaceUserRepository';
 
 @Injectable()
 export default class WorkspaceService {
@@ -15,60 +15,69 @@ export default class WorkspaceService {
     private readonly workspaceRepository: WorkspaceRepository,
     @InjectRepository(WorkspaceGroup)
     private readonly workspaceGroupRepository: WorkspaceGroupRepository,
-    @InjectRepository(User)
-    private readonly userRepository: UserRepository
+    @InjectRepository(WorkspaceUser)
+    private readonly workspaceUserRepository: WorkspaceUserRepository
   ) {}
 
-  public async findAllWithUser(userId: number): Promise<Workspace[]> {}
+  public async findAllByUser(userId: string): Promise<Workspace[]> {
+    const workspaces = await this.workspaceRepository.find({
+      relations: ['users'],
+      where: {
+        users: {
+          userId: userId
+        }
+      }
+    });
 
-  public async findOneByOwner(ownerId: number, name?: string, key?: string): Promise<Workspace> {
-    let where: any = {
-      ownerId: ownerId
-    };
+    return workspaces;
+  }
 
-    if (name) {
-      where = {
-        ...where,
-        name: name
-      };
-    }
-
-    if (key) {
-      where = {
-        ...where,
-        key: key
-      };
-    }
-
+  public async findOneByKey(key?: string): Promise<Workspace> {
     const workspace = await this.workspaceRepository.findOne({
-      where: where
+      where: {
+        key: key
+      }
     });
 
     return workspace;
   }
 
   public async create(workspace: Workspace): Promise<Workspace> {
-    const user = await this.userRepository.findOneBy({
-      id: workspace.ownerId
-    });
-
     const createWorkspaceResponse = await this.workspaceRepository.save(workspace);
 
-    const newWorkspaceGroup = new WorkspaceGroup();
-    newWorkspaceGroup.name = 'Administrators';
-    newWorkspaceGroup.workspaceId = createWorkspaceResponse.id;
-    newWorkspaceGroup.default_permission = 'admin';
+    const newAdminWorkspaceGroup = new WorkspaceGroup();
+    newAdminWorkspaceGroup.name = 'Administrators';
+    newAdminWorkspaceGroup.workspaceId = createWorkspaceResponse.id;
+    newAdminWorkspaceGroup.default_permission = 'admin';
 
-    newWorkspaceGroup.users = [user];
+    const newDefaultWorkspaceGroup = new WorkspaceGroup();
+    newDefaultWorkspaceGroup.name = 'Default';
+    newDefaultWorkspaceGroup.workspaceId = createWorkspaceResponse.id;
+    newDefaultWorkspaceGroup.default_permission = 'read';
 
-    const createWorkspaceGroupResponse = await this.workspaceGroupRepository.save(
-      newWorkspaceGroup
+    const newWorkspaceUser = new WorkspaceUser();
+    newWorkspaceUser.userId = workspace.ownerId;
+    newWorkspaceUser.workspaceId = createWorkspaceResponse.id;
+
+    const createWorkspaceUserResponse = await this.workspaceUserRepository.save(newWorkspaceUser);
+
+    newAdminWorkspaceGroup.users = [createWorkspaceUserResponse];
+
+    const createAdminWorkspaceGroupResponse = await this.workspaceGroupRepository.save(
+      newAdminWorkspaceGroup
     );
 
-    createWorkspaceResponse.groups = [createWorkspaceGroupResponse];
-    createWorkspaceResponse.users = [user];
+    const createDefaultWorkspaceGroupResponse = await this.workspaceGroupRepository.save(
+      newDefaultWorkspaceGroup
+    );
 
-    console.log(createWorkspaceResponse);
+    createWorkspaceResponse.groups = [
+      createAdminWorkspaceGroupResponse,
+      createDefaultWorkspaceGroupResponse
+    ];
+    createWorkspaceResponse.defaultGroup = createDefaultWorkspaceGroupResponse;
+
+    createWorkspaceResponse.users = [createWorkspaceUserResponse];
 
     await this.workspaceRepository.save(createWorkspaceResponse);
 

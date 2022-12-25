@@ -2,10 +2,10 @@ import { all, select, takeLatest, put, call } from 'redux-saga/effects';
 
 import urls from '@/util/urls';
 import { authorizationHeaders } from '@/util/headers';
-import { getAuthState } from '@/selectors';
 import { fetchProjects, fetchProjectsError, fetchProjectsSuccess } from '@/slices/project';
 import { FetchProjectsAction, FetchProjectsQuery } from '@/types';
 import { toQueryParams } from '@/containers/Projects/query';
+import { getAccessToken } from '@/selectors/auth';
 
 const fetchProjectsRequest = async (query: FetchProjectsQuery, accessToken: string) => {
   const response = await fetch(urls.api.project.fetchProjects(toQueryParams(query)), {
@@ -25,7 +25,7 @@ const fetchProjectsRequest = async (query: FetchProjectsQuery, accessToken: stri
 
 function* fetchProjectsSaga({ payload }: FetchProjectsAction): any {
   try {
-    const { accessToken } = yield select(getAuthState);
+    const accessToken = yield select(getAccessToken);
 
     const { response, data } = yield call(fetchProjectsRequest, payload.query, accessToken);
 

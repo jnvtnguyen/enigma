@@ -2,10 +2,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AuthState, AuthenticationData } from '@/types';
 
-//Hydrate Inital State with Session Storage
+//Hydrate Inital State with Local Storage
 let authenticationData: AuthenticationData;
-if (sessionStorage.getItem('user')) {
-  authenticationData = JSON.parse(sessionStorage.getItem('user'));
+if (localStorage.getItem('user')) {
+  authenticationData = JSON.parse(localStorage.getItem('user'));
 } else {
   authenticationData = { user: undefined, accessToken: undefined };
 }

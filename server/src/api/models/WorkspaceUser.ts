@@ -1,22 +1,22 @@
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
-  ManyToOne,
   JoinColumn,
-  PrimaryGeneratedColumn,
-  BeforeInsert,
-  BeforeUpdate
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import moment from 'moment';
 
 import BaseModel from './BaseModel';
-import Project from './Project';
+import Workspace from './Workspace';
+import WorkspaceGroup from './WorkspaceGroup';
 
-export type ProjectPermission = 'read' | 'write' | 'admin';
-
-@Entity('project_user')
-export default class ProjectUser extends BaseModel {
+@Entity('workspace_user')
+export default class WorkspaceUser extends BaseModel {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
@@ -25,16 +25,17 @@ export default class ProjectUser extends BaseModel {
   public userId: string;
 
   @Exclude()
-  @Column({ name: 'project_id' })
-  public projectId: string;
+  @Column({ name: 'workspace_id' })
+  public workspaceId: string;
 
   @Exclude()
-  @ManyToOne((type) => Project)
-  @JoinColumn({ name: 'project_id' })
-  public project: Project;
+  @ManyToOne((type) => Workspace)
+  @JoinColumn({ name: 'workspace_id' })
+  public workspace: Workspace;
 
-  @Column({ name: 'project_permission' })
-  public projectPermission: ProjectPermission;
+  @Exclude()
+  @ManyToMany((type) => WorkspaceGroup, (workspaceGroup) => workspaceGroup.users)
+  public groups: WorkspaceGroup[];
 
   @BeforeInsert()
   public async beforeInsert() {

@@ -7,10 +7,10 @@ import authReducer from './auth';
 import projectReducer from './project';
 
 const rootReducer: Reducer<RootState> = combineReducers<RootState>({
-  signupState: signupReducer,
-  loginState: loginReducer,
-  authState: authReducer,
-  projectState: projectReducer
+  signup: signupReducer,
+  login: loginReducer,
+  auth: authReducer,
+  project: projectReducer
 });
 
 export default rootReducer;

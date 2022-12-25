@@ -157,6 +157,7 @@ const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
     <form onSubmit={handleSubmit}>
       <Input
         name={'firstName'}
+        required
         label={t('First Name')}
         placeholder={t('First Name')}
         value={fields.firstName}
@@ -170,6 +171,7 @@ const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
 
       <Input
         name={'lastName'}
+        required
         label={t('Last Name')}
         placeholder={t('Last Name')}
         value={fields.lastName}
@@ -182,6 +184,7 @@ const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
 
       <Input
         name={'email'}
+        required
         label={t('Email')}
         placeholder={t('Email')}
         value={fields.email}
@@ -194,6 +197,7 @@ const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
 
       <Input
         name={'password'}
+        required
         type={'password'}
         label={t('Password')}
         placeholder={t('Password')}
@@ -215,6 +219,7 @@ const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
 
       <Input
         name={'confirmPassword'}
+        required
         type={'password'}
         label={t('Confirm Password')}
         placeholder={t('Confirm Password')}

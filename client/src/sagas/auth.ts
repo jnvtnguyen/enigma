@@ -5,7 +5,7 @@ import { AuthenticateAction } from '@/types';
 
 function* authenticateSaga({ payload }: AuthenticateAction): any {
   try {
-    sessionStorage.setItem('user', JSON.stringify(payload));
+    localStorage.setItem('user', JSON.stringify(payload));
   } catch (error) {
     console.error(error);
   }

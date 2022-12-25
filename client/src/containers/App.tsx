@@ -6,7 +6,7 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 import LoadingPage from '@/components/LoadingPage';
-import { getAuthState } from '@/selectors';
+import { getCurrentUser, getIsAuthenticated } from '@/selectors/auth';
 
 i18n.use(initReactI18next).init({
   resources: {},
@@ -21,10 +21,11 @@ const SignupLoadable = loadable(() => import('@/containers/Signup'));
 
 const LoginLoadable = loadable(() => import('@/containers/Login'));
 
-const ProjectsLoadable = loadable(() => import('@/containers/Projects'));
+const LandingLoadable = loadable(() => import('@/containers/Landing'));
 
 const App: React.FC = () => {
-  const { isAuthenticated } = useSelector(getAuthState);
+  const { finishedLanding } = useSelector(getCurrentUser) ?? {};
+  const isAuthenticated = useSelector(getIsAuthenticated);
 
   return (
     <React.Fragment>
@@ -40,7 +41,14 @@ const App: React.FC = () => {
             <Route path="*" element={<Navigate replace to="/login" />} />
           ) : (
             <React.Fragment>
-              <Route path="/projects" element={<ProjectsLoadable />} />
+              {!finishedLanding ? (
+                <React.Fragment>
+                  <Route path="/landing" element={<LandingLoadable />} />
+                  <Route path="*" element={<Navigate replace to="/landing" />} />
+                </React.Fragment>
+              ) : (
+                <React.Fragment></React.Fragment>
+              )}
             </React.Fragment>
           )}
         </Routes>

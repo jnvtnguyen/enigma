@@ -1,15 +1,36 @@
-import { Body, Controller, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { instanceToPlain } from 'class-transformer';
 
 import WorkspaceService from '@/api/services/WorkspaceService';
 import CreateWorkspaceRequest from '@/api/requests/CreateWorkspaceRequest';
-import { CommonError, CreateProjectError, CreateWorkspaceError } from '@/api/errors';
+import { CommonError, CreateWorkspaceError } from '@/api/errors';
 import Workspace from '@/api/models/Workspace';
 
 @Controller('/workspaces')
 export default class WorkspacesController {
   constructor(private readonly workspaceService: WorkspaceService) {}
+
+  @Get('/')
+  public async workspaces(@Req() request: Request, @Res() response: Response): Promise<any> {
+    try {
+      const workspaces = await this.workspaceService.findAllByUser(request.user.id);
+
+      const successResponse = {
+        workspaces: instanceToPlain(workspaces)
+      };
+
+      return response.status(200).send(successResponse);
+    } catch (error) {
+      console.error(error);
+      const errorResponse = {
+        error: CommonError.UNKNOWN,
+        errorMessage: error
+      };
+
+      return response.status(500).send(errorResponse);
+    }
+  }
 
   @Post('/create')
   public async create(
@@ -18,22 +39,11 @@ export default class WorkspacesController {
     @Res() response: Response
   ): Promise<any> {
     try {
-      const workspaceByName = await this.workspaceService.findOneByOwner(
-        request.user.id,
-        createWorkspaceRequest.name
-      );
+      const workspaceByKey = await this.workspaceService.findOneByKey(createWorkspaceRequest.key);
 
-      const workspaceByKey = await this.workspaceService.findOneByOwner(
-        request.user.id,
-        createWorkspaceRequest.key
-      );
-
-      if (workspaceByName || workspaceByKey) {
+      if (workspaceByKey) {
         const errorResponse = {
-          error: [
-            ...(workspaceByName ? [CreateWorkspaceError.NAME_DUPLICATE] : []),
-            ...(workspaceByKey ? [CreateProjectError.KEY_DUPLICATE] : [])
-          ]
+          error: CreateWorkspaceError.KEY_DUPLICATE
         };
 
         return response.status(400).send(errorResponse);

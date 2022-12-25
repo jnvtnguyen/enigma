@@ -14,11 +14,11 @@ import User from './User';
 
 @Entity('access_token')
 export default class AccessToken extends BaseModel {
-  @PrimaryGeneratedColumn({ name: 'id' })
-  public id: number;
+  @PrimaryGeneratedColumn('uuid')
+  public id: string;
 
   @Column({ name: 'user_id' })
-  public userId: number;
+  public userId: string;
 
   @Column({ name: 'token' })
   public token: string;

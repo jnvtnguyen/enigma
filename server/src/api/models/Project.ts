@@ -18,17 +18,17 @@ import Workspace from './Workspace';
 
 @Entity('project')
 export default class Project extends BaseModel {
-  @PrimaryGeneratedColumn({ name: 'id' })
-  public id: number;
-
-  @Column({ name: 'owner_id' })
-  public ownerId: number;
+  @PrimaryGeneratedColumn('uuid')
+  public id: string;
 
   @Column({ name: 'name' })
   public name: string;
 
   @Column({ name: 'workspace_id' })
-  public workspace_id: number;
+  public workspace_id: string;
+
+  @Column({ name: 'owner_id' })
+  public ownerId: string;
 
   @Column({ name: 'key' })
   public key: string;

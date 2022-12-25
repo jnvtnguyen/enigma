@@ -121,6 +121,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
 
       <Input
         name={'email'}
+        required
         label={t('Email')}
         placeholder={t('Email')}
         value={fields.email}
@@ -133,6 +134,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
       />
       <Input
         name={'password'}
+        required
         type={'password'}
         label={t('Password')}
         placeholder={t('Password')}

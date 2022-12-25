@@ -14,31 +14,32 @@ import { Exclude } from 'class-transformer';
 
 import BaseModel from './BaseModel';
 import { ProjectPermission } from './ProjectUser';
-import User from './User';
 import Workspace from './Workspace';
+import WorkspaceUser from './WorkspaceUser';
 
 @Entity('workspace_group')
 export default class WorkspaceGroup extends BaseModel {
-  @PrimaryGeneratedColumn({ name: 'id' })
-  public id: number;
+  @PrimaryGeneratedColumn('uuid')
+  public id: string;
 
   @Column({ name: 'name' })
   public name: string;
 
+  @Exclude()
   @Column({ name: 'workspace_id' })
-  public workspaceId: number;
+  public workspaceId: string;
 
   @Column({ name: 'default_permission', type: 'enum', enum: ['read', 'write', 'admin'] })
   public default_permission: ProjectPermission;
 
   @Exclude()
-  @ManyToMany((type) => User)
+  @ManyToMany((type) => WorkspaceUser)
   @JoinTable({
     name: 'workspace_groups_users',
     joinColumns: [{ name: 'group_id' }],
     inverseJoinColumns: [{ name: 'user_id' }]
   })
-  public users: User[];
+  public users: WorkspaceUser[];
 
   @Exclude()
   @ManyToOne((type) => Workspace, (workspace) => workspace.groups)
