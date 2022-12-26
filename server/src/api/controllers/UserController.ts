@@ -1,5 +1,5 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
-import { Response } from 'express';
+import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
+import { Request, Response } from 'express';
 import { instanceToPlain } from 'class-transformer';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto-js';
@@ -12,6 +12,7 @@ import UserService from '@/api/services/UserService';
 import AccessToken from '@/api/models/AccessToken';
 import AccessTokenService from '@/api/services/AccessTokenService';
 import environment from '@/environment';
+import SetDefaultWorkspaceRequest from '@/api/requests/SetDefaultWorkspaceRequest';
 
 @Controller('user')
 export default class UserController {
@@ -19,6 +20,27 @@ export default class UserController {
     private readonly userService: UserService,
     private readonly accessTokenService: AccessTokenService
   ) {}
+
+  @Get('/')
+  public async user(@Req() request: Request, @Res() response: Response): Promise<any> {
+    try {
+      const user: User = await this.userService.findOneById(request.user.id);
+
+      const successResponse = {
+        message: 'Find user successfully',
+        user: instanceToPlain(user)
+      };
+
+      return response.status(200).send(successResponse);
+    } catch (error) {
+      console.error(error);
+      const errorResponse = {
+        error: CommonError.UNKNOWN,
+        errorMessage: error
+      };
+      return response.status(500).send(errorResponse);
+    }
+  }
 
   @Post('/signup')
   public async signup(
@@ -102,6 +124,54 @@ export default class UserController {
       };
 
       return response.status(400).send(errorResponse);
+    } catch (error) {
+      console.error(error);
+      const errorResponse = {
+        error: CommonError.UNKNOWN,
+        errorMessage: error
+      };
+
+      return response.status(500).send(errorResponse);
+    }
+  }
+
+  @Post('/landing/finish')
+  public async finishLanding(@Req() request: Request, @Res() response: Response): Promise<any> {
+    try {
+      await this.userService.finishLanding(request.user.id);
+
+      const successResponse = {
+        message: 'Successfully finished landing.'
+      };
+
+      return response.status(200).send(successResponse);
+    } catch (error) {
+      console.error(error);
+      const errorResponse = {
+        error: CommonError.UNKNOWN,
+        errorMessage: error
+      };
+
+      return response.status(500).send(errorResponse);
+    }
+  }
+
+  @Post('/workspace/set-default')
+  public async setDefaultWorkspace(
+    @Body() setDefaultWorkspaceRequest: SetDefaultWorkspaceRequest,
+    @Req() request: Request,
+    @Res() response: Response
+  ): Promise<any> {
+    try {
+      await this.userService.setDefaultWorkspace(
+        request.user.id,
+        setDefaultWorkspaceRequest.workspaceId
+      );
+
+      const successResponse = {
+        message: 'Successfully set user default workspace.'
+      };
+      return response.status(200).send(successResponse);
     } catch (error) {
       console.error(error);
       const errorResponse = {

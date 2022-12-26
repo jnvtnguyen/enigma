@@ -1,22 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { AuthState, AuthenticationData } from '@/types';
+import { AuthState, AuthenticationData, User } from '@/types';
 
 //Hydrate Inital State with Local Storage
 let authenticationData: AuthenticationData;
 if (localStorage.getItem('user')) {
   authenticationData = JSON.parse(localStorage.getItem('user'));
 } else {
-  authenticationData = { user: undefined, accessToken: undefined };
+  authenticationData = { accessToken: undefined };
 }
 
-const { user: initialUser, accessToken: initialAccessToken } = authenticationData;
+const { accessToken: initialAccessToken } = authenticationData;
 const initialIsAuthenticated = initialAccessToken != undefined;
 
 export const initialState: AuthState = {
   isAuthenticated: initialIsAuthenticated,
   accessToken: initialAccessToken,
-  user: initialUser
+  user: null
 };
 
 const authSlice = createSlice({
@@ -26,11 +26,13 @@ const authSlice = createSlice({
     authenticate: (state, { payload }: PayloadAction<AuthenticationData>) => {
       state.isAuthenticated = true;
       state.accessToken = payload.accessToken;
-      state.user = payload.user;
+    },
+    setUser: (state, { payload }: PayloadAction<User>) => {
+      state.user = payload;
     }
   }
 });
 
-export const { authenticate } = authSlice.actions;
+export const { authenticate, setUser } = authSlice.actions;
 
 export default authSlice.reducer;

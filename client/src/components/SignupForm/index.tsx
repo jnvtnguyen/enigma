@@ -43,11 +43,11 @@ const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
 
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
-  const [formSubmmited, setFormSubmmited] = useState<boolean>(false);
+  const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
 
   const [isPasswordStrong, setIsPasswordStrong] = useState<boolean>(false);
 
-  const [emailSubmmited, setEmailSubmmited] = useState<string>('');
+  const [emailSubmitted, setEmailSubmitted] = useState<string>('');
 
   const [hasPasswordFocus, setHasPasswordFocus] = useState<boolean>(false);
 
@@ -87,7 +87,7 @@ const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
         email: t('Please enter a valid email.')
       }));
       valid = false;
-    } else if (fields.email == emailSubmmited && error == SignupError.DUPLICATE_EMAIL) {
+    } else if (fields.email == emailSubmitted && error == SignupError.DUPLICATE_EMAIL) {
       setFieldErrors((prevState) => ({
         ...prevState,
         email: t('This email is already in use. Please enter another email.')
@@ -125,15 +125,15 @@ const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
       [event.target.name]: event.target.value
     });
 
-    formSubmmited && validateFields();
+    formSubmitted && validateFields();
   };
 
   const handleKeyUp = () => {
-    formSubmmited && validateFields();
+    formSubmitted && validateFields();
   };
 
   const handleBlur = () => {
-    formSubmmited && validateFields();
+    formSubmitted && validateFields();
   };
 
   const handlePasswordFocus = () => {
@@ -143,14 +143,14 @@ const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    setFormSubmmited(true);
-    setEmailSubmmited(fields.email);
+    setFormSubmitted(true);
+    setEmailSubmitted(fields.email);
 
     validateFields() && onSubmit(fields.firstName, fields.lastName, fields.email, fields.password);
   };
 
   useEffect(() => {
-    formSubmmited && validateFields();
+    formSubmitted && validateFields();
   }, [error]);
 
   return (
@@ -206,9 +206,9 @@ const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
         onKeyUp={handleKeyUp}
         onFocus={handlePasswordFocus}
         onBlur={handleBlur}
-        error={(hasPasswordFocus || formSubmmited) && !isPasswordStrong}
+        error={(hasPasswordFocus || formSubmitted) && !isPasswordStrong}
         errorMessage={
-          (hasPasswordFocus || formSubmmited) && (
+          (hasPasswordFocus || formSubmitted) && (
             <PasswordStrength
               password={fields.password}
               onPasswordStrengthChange={handlePasswordStrengthChange}

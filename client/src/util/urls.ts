@@ -17,11 +17,26 @@ const urls = {
       fetchProjects: (queryParams: object) => {
         return `/api/projects${stringifyQuery(queryParams)}`;
       }
+    },
+    workspace: {
+      create: '/api/workspaces/create',
+      setDefault: '/api/user/workspace/set-default'
+    },
+    user: {
+      index: '/api/user'
+    },
+    landing: {
+      finish: '/api/user/landing/finish'
     }
   },
   login: '/login',
   signup: '/signup',
-  landing: '/landing'
+  landing: '/landing',
+  workspace: {
+    index: (key: string) => {
+      return `/${key}`;
+    }
+  }
 };
 
 export default urls;

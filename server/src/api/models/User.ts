@@ -4,7 +4,9 @@ import {
   Column,
   Entity,
   OneToMany,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import bcrypt from 'bcrypt';
@@ -12,6 +14,7 @@ import moment from 'moment';
 
 import BaseModel from './BaseModel';
 import AccessToken from './AccessToken';
+import Workspace from './Workspace';
 
 @Entity('user')
 export default class User extends BaseModel {
@@ -56,6 +59,13 @@ export default class User extends BaseModel {
 
   @Column({ name: 'finished_landing', default: false })
   public finishedLanding: boolean;
+
+  @Column({ name: 'default_workspace_id', nullable: true })
+  public defaultWorkspaceId: string;
+
+  @ManyToOne((type) => Workspace)
+  @JoinColumn({ name: 'default_workspace_id' })
+  public defaultWorkspace: Workspace;
 
   @Exclude()
   @Column({ name: 'password' })

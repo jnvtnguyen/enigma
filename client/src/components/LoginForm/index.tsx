@@ -36,7 +36,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
 
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
-  const [formSubmmited, setFormSubmmited] = useState<boolean>(false);
+  const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
 
   const validateFields = (): boolean => {
     let valid = true;
@@ -72,11 +72,11 @@ const LoginForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
   };
 
   const handleKeyUp = () => {
-    formSubmmited && validateFields();
+    formSubmitted && validateFields();
   };
 
   const handleBlur = () => {
-    formSubmmited && validateFields();
+    formSubmitted && validateFields();
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,12 +85,12 @@ const LoginForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
       [event.target.name]: event.target.value
     });
 
-    formSubmmited && validateFields();
+    formSubmitted && validateFields();
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setFormSubmmited(true);
+    setFormSubmitted(true);
 
     validateFields() && onSubmit(fields.email, fields.password);
   };

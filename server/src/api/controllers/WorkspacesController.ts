@@ -39,6 +39,7 @@ export default class WorkspacesController {
     @Res() response: Response
   ): Promise<any> {
     try {
+      console.log(createWorkspaceRequest);
       const workspaceByKey = await this.workspaceService.findOneByKey(createWorkspaceRequest.key);
 
       if (workspaceByKey) {

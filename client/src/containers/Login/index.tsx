@@ -1,33 +1,58 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 
 import PageMeta from '@/components/PageMeta';
 import LoginForm from '@/components/LoginForm';
-import authStyles from '@/containers/shared/auth.module.scss';
 import urls from '@/util/urls';
-import { getLoginState } from '@/selectors';
-import { clearError, login } from '@/slices/login';
+import { authenticate } from '@/slices/auth';
+import authStyles from '@/containers/shared/auth.module.scss';
 
 const Login: React.FC = () => {
   const { t } = useTranslation();
 
-  const { loading, error } = useSelector(getLoginState);
-
   const dispatch = useDispatch();
 
-  const _login = (email: string, password: string) => dispatch(login({ email, password }));
+  const _authenticate = (accessToken: string) =>
+    dispatch(authenticate({ accessToken: accessToken }));
 
-  const _clearError = () => dispatch(clearError());
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const handleSubmit = (email: string, password: string) => {
-    _login(email, password);
+  const [error, setError] = useState<string>('');
+
+  const handleSubmit = async (email: string, password: string) => {
+    try {
+      setLoading(true);
+      const response = await fetch(urls.api.login, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        const { accessToken, user } = data.data;
+
+        _authenticate(accessToken);
+
+        if (!user.finishedLanding) {
+          window.location.replace(urls.landing);
+        } else {
+          window.location.replace(urls.workspace.index(user.defaultWorkspace.key));
+        }
+      }
+      setError(data.error);
+    } catch (error) {
+      console.error(error);
+      setError('request_error');
+    }
+
+    setLoading(false);
   };
-
-  useEffect(() => {
-    _clearError();
-  }, []);
 
   return (
     <React.Fragment>

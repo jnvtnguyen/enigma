@@ -1,34 +1,49 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import PageMeta from '@/components/PageMeta';
 import SignupForm from '@/components/SignupForm';
-import authStyles from '@/containers/shared/auth.module.scss';
 import urls from '@/util/urls';
-import { getSignupState } from '@/selectors';
-import { signup, clearError } from '@/slices/signup';
+import authStyles from '@/containers/shared/auth.module.scss';
 
 const Signup: React.FC = () => {
   const { t } = useTranslation();
 
-  const { loading, error } = useSelector(getSignupState);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const dispatch = useDispatch();
+  const [error, setError] = useState<string>('');
 
-  const _signup = (firstName: string, lastName: string, email: string, password: string) =>
-    dispatch(signup({ firstName, lastName, email, password }));
+  const handleSubmit = async (
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string
+  ) => {
+    try {
+      setLoading(true);
+      const response = await fetch(urls.api.signup, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ firstName, lastName, email, password })
+      });
 
-  const _clearError = () => dispatch(clearError());
+      const data = await response.json();
 
-  const handleSubmit = (firstName: string, lastName: string, email: string, password: string) => {
-    _signup(firstName, lastName, email, password);
+      if (response.ok) {
+        window.location.replace(urls.login);
+      }
+
+      setError(data.error);
+    } catch (error) {
+      console.error(error);
+      setError('request_error');
+    }
+
+    setLoading(false);
   };
-
-  useEffect(() => {
-    _clearError();
-  }, []);
 
   return (
     <React.Fragment>

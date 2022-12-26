@@ -25,16 +25,30 @@ export enum LoginError {
   INCORRECT_EMAIL_PASSWORD = 'incorrect_email_password'
 }
 
+//Workspace
+export interface Workspace {
+  id?: string;
+  name: string;
+  key: string;
+  createdDate: string;
+  modifiedDate: string;
+}
+
+export enum CreateWorkspaceError {
+  KEY_DUPLICATE = 'key.duplicate'
+}
+
 //Auth
 export interface User {
   id?: string;
   email: string;
   firstName: string;
   lastName: string;
+  defaultWorkspace: Workspace;
   finishedLanding: boolean;
   password?: string;
-  createdDate?: string;
-  modifiedDate?: string;
+  createdDate: string;
+  modifiedDate: string;
 }
 
 //Project
@@ -59,22 +73,9 @@ export interface FetchProjectsParams {
 
 export interface AuthenticationData {
   accessToken?: string;
-  user?: User;
 }
 
 //State
-//Signup
-export interface SignupState {
-  loading: boolean;
-  error: string;
-}
-
-//Login
-export interface LoginState {
-  loading: boolean;
-  error: string;
-}
-
 //Auth
 export interface AuthState {
   isAuthenticated: boolean;
@@ -91,25 +92,11 @@ export interface ProjectState {
 
 //Root
 export interface RootState {
-  signup: SignupState;
-  login: LoginState;
   auth: AuthState;
   project: ProjectState;
 }
 
 //Actions
-//Signup
-export interface SignupAction {
-  type: typeof signup.type;
-  payload: SignupParams;
-}
-
-//Login
-export interface LoginAction {
-  type: typeof login.type;
-  payload: LoginParams;
-}
-
 //Auth
 export interface AuthenticateAction {
   type: typeof authenticate.type;

@@ -7,6 +7,7 @@ import { initReactI18next } from 'react-i18next';
 
 import LoadingPage from '@/components/LoadingPage';
 import { getCurrentUser, getIsAuthenticated } from '@/selectors/auth';
+import UserWrapper from './UserWrapper';
 
 i18n.use(initReactI18next).init({
   resources: {},
@@ -28,7 +29,7 @@ const App: React.FC = () => {
   const isAuthenticated = useSelector(getIsAuthenticated);
 
   return (
-    <React.Fragment>
+    <UserWrapper>
       <Suspense fallback={<LoadingPage />}>
         <Routes>
           {!isAuthenticated && (
@@ -53,7 +54,7 @@ const App: React.FC = () => {
           )}
         </Routes>
       </Suspense>
-    </React.Fragment>
+    </UserWrapper>
   );
 };
 

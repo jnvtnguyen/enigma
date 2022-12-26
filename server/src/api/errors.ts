@@ -17,6 +17,5 @@ export enum CreateProjectError {
 }
 
 export enum CreateWorkspaceError {
-  NAME_DUPLICATE = 'name.duplicate',
   KEY_DUPLICATE = 'key.duplicate'
 }
