@@ -32,11 +32,23 @@ export default class WorkspaceService {
     return workspaces;
   }
 
-  public async findOneByKey(key?: string): Promise<Workspace> {
+  public async findOneByKey(key: string, userId?: string): Promise<Workspace> {
+    let where: any = {
+      key: key
+    };
+
+    if (userId) {
+      where = {
+        ...where,
+        users: {
+          userId: userId
+        }
+      };
+    }
+
     const workspace = await this.workspaceRepository.findOne({
-      where: {
-        key: key
-      }
+      relations: ['users'],
+      where: where
     });
 
     return workspace;

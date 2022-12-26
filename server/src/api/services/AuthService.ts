@@ -33,6 +33,7 @@ export default class AuthService {
         return undefined;
       }
       const decryptedUser = await this.decryptToken(authorization.split(' ')[1]);
+      if (!decryptedUser) return undefined;
       return decryptedUser.id;
     }
   }

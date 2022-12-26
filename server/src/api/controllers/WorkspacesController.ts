@@ -1,10 +1,10 @@
-import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { instanceToPlain } from 'class-transformer';
 
 import WorkspaceService from '@/api/services/WorkspaceService';
 import CreateWorkspaceRequest from '@/api/requests/CreateWorkspaceRequest';
-import { CommonError, CreateWorkspaceError } from '@/api/errors';
+import { CommonError, CreateWorkspaceError, FetchWorkspaceError } from '@/api/errors';
 import Workspace from '@/api/models/Workspace';
 
 @Controller('/workspaces')
@@ -39,10 +39,9 @@ export default class WorkspacesController {
     @Res() response: Response
   ): Promise<any> {
     try {
-      console.log(createWorkspaceRequest);
-      const workspaceByKey = await this.workspaceService.findOneByKey(createWorkspaceRequest.key);
+      const workspace = await this.workspaceService.findOneByKey(createWorkspaceRequest.key);
 
-      if (workspaceByKey) {
+      if (workspace) {
         const errorResponse = {
           error: CreateWorkspaceError.KEY_DUPLICATE
         };
@@ -68,6 +67,47 @@ export default class WorkspacesController {
       const successResponse = {
         message: 'Created workspace successfully',
         workspace: instanceToPlain(newWorkspace)
+      };
+
+      return response.status(200).send(successResponse);
+    } catch (error) {
+      console.error(error);
+      const errorResponse = {
+        error: CommonError.UNKNOWN,
+        errorMessage: error
+      };
+
+      return response.status(500).send(errorResponse);
+    }
+  }
+
+  @Get('/:workspaceKey')
+  public async workspace(
+    @Param('workspaceKey') workspaceKey: string,
+    @Req() request: Request,
+    @Res() response: Response
+  ): Promise<any> {
+    try {
+      const workspace = await this.workspaceService.findOneByKey(workspaceKey);
+
+      if (workspace) {
+        const workspaceByUser = await this.workspaceService.findOneByKey(
+          workspaceKey,
+          request.user.id
+        );
+
+        if (!workspaceByUser) {
+          const errorResponse = {
+            error: FetchWorkspaceError.UNAUTHORIZED
+          };
+
+          return response.status(401).send(errorResponse);
+        }
+      }
+
+      const successResponse = {
+        message: 'Find workspace successfully',
+        workspace: instanceToPlain(workspace)
       };
 
       return response.status(200).send(successResponse);

@@ -9,7 +9,7 @@ type ViteConfigInput = {
 
 export default (args: ViteConfigInput) => {
   const generateScopedName =
-    args.mode == 'development' ? '[name]__[local]__[hash:base64:5]' : '[hash:base64:2]';
+    args.mode == 'development' ? '[name]__[local]__[hash:base64:5]' : '[hash:base64:10]';
   return defineConfig({
     plugins: [react(), tsConfigPaths()],
     server: {

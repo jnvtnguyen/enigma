@@ -19,3 +19,7 @@ export enum CreateProjectError {
 export enum CreateWorkspaceError {
   KEY_DUPLICATE = 'key.duplicate'
 }
+
+export enum FetchWorkspaceError {
+  UNAUTHORIZED = 'unauthorized'
+}

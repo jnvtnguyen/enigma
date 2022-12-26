@@ -1,5 +1,3 @@
-import { signup } from '@/slices/signup';
-import { login } from '@/slices/login';
 import { authenticate } from '@/slices/auth';
 import { fetchProjectsSuccess } from '@/slices/project';
 
@@ -76,16 +74,23 @@ export interface AuthenticationData {
 }
 
 //State
-//Auth
+//Auth State
 export interface AuthState {
   isAuthenticated: boolean;
   accessToken: string;
   user: User;
 }
 
-//Projects State
+//Project State
 export interface ProjectState {
   projects: Project[];
+  loading: boolean;
+  error: string;
+}
+
+//Workspace State
+export interface WorkspaceState {
+  currentWorkspace: Workspace;
   loading: boolean;
   error: string;
 }
@@ -93,6 +98,7 @@ export interface ProjectState {
 //Root
 export interface RootState {
   auth: AuthState;
+  workspace: WorkspaceState;
   project: ProjectState;
 }
 
