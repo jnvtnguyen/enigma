@@ -22,7 +22,8 @@ export default class UserModule implements NestModule {
       .forRoutes(
         '/user/landing/finish',
         { path: '/user', method: RequestMethod.GET },
-        '/user/workspace/set-default'
+        '/user/workspace/set-default',
+        '/user/logout'
       );
   }
 }

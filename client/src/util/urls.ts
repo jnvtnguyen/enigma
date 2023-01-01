@@ -19,11 +19,15 @@ const urls = {
       }
     },
     workspace: {
+      index: (key: string) => {
+        return `/api/workspaces/${key}`;
+      },
       create: '/api/workspaces/create',
       setDefault: '/api/user/workspace/set-default'
     },
     user: {
-      index: '/api/user'
+      index: '/api/user',
+      logout: '/api/user/logout'
     },
     landing: {
       finish: '/api/user/landing/finish'

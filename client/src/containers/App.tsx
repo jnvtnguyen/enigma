@@ -8,6 +8,7 @@ import { initReactI18next } from 'react-i18next';
 import LoadingPage from '@/components/LoadingPage';
 import { getCurrentUser, getIsAuthenticated } from '@/selectors/auth';
 import UserWrapper from './UserWrapper';
+import NotFound from '@/components/NotFound';
 
 i18n.use(initReactI18next).init({
   resources: {},
@@ -23,6 +24,8 @@ const SignupLoadable = loadable(() => import('@/containers/Signup'));
 const LoginLoadable = loadable(() => import('@/containers/Login'));
 
 const LandingLoadable = loadable(() => import('@/containers/Landing'));
+
+const UserRoutesLoadable = loadable(() => import('@/containers/UserRoutes'));
 
 const App: React.FC = () => {
   const { finishedLanding } = useSelector(getCurrentUser) ?? {};
@@ -48,10 +51,13 @@ const App: React.FC = () => {
                   <Route path="*" element={<Navigate replace to="/landing" />} />
                 </React.Fragment>
               ) : (
-                <React.Fragment></React.Fragment>
+                <React.Fragment>
+                  <Route path="*" element={<UserRoutesLoadable />} />
+                </React.Fragment>
               )}
             </React.Fragment>
           )}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
     </UserWrapper>

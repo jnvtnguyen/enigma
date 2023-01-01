@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { WorkspaceState, Workspace } from '@/types';
 
 export const initialState: WorkspaceState = {
-  currentWorkspace: null,
+  workspace: null,
   loading: false,
   error: ''
 };
@@ -16,7 +16,7 @@ const workspaceSlice = createSlice({
       state.loading = true;
     },
     fetchWorkspaceSuccess: (state, { payload }: PayloadAction<Workspace>) => {
-      state.currentWorkspace = payload;
+      state.workspace = payload;
       state.loading = false;
     },
     fetchWorkspaceError: (state, { payload }: PayloadAction<string>) => {

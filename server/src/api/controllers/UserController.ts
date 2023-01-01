@@ -6,7 +6,7 @@ import crypto from 'crypto-js';
 
 import SignupRequest from '@/api/requests/SignupRequest';
 import LoginRequest from '@/api/requests/LoginRequest';
-import { SignupError, LoginError, CommonError } from '@/api/errors';
+import { SignupError, LoginError, CommonError, LogoutError } from '@/api/errors';
 import User from '@/api/models/User';
 import UserService from '@/api/services/UserService';
 import AccessToken from '@/api/models/AccessToken';
@@ -174,6 +174,39 @@ export default class UserController {
       return response.status(200).send(successResponse);
     } catch (error) {
       console.error(error);
+      const errorResponse = {
+        error: CommonError.UNKNOWN,
+        errorMessage: error
+      };
+
+      return response.status(500).send(errorResponse);
+    }
+  }
+
+  @Post('/logout')
+  public async logout(@Req() request: Request, @Res() response: Response): Promise<any> {
+    try {
+      const token =
+        request.headers.authorization.split(' ')[0] === 'Bearer'
+          ? request.headers.authorization.split(' ')[1]
+          : '';
+
+      const deleteTokenResponse = await this.accessTokenService.deleteByToken(token);
+
+      if (!deleteTokenResponse) {
+        const errorResponse = {
+          error: LogoutError.INVALID_TOKEN
+        };
+
+        return response.status(400).send(errorResponse);
+      }
+
+      const successResponse = {
+        message: 'Successfully logout user'
+      };
+
+      return response.status(200).send(successResponse);
+    } catch (error) {
       const errorResponse = {
         error: CommonError.UNKNOWN,
         errorMessage: error

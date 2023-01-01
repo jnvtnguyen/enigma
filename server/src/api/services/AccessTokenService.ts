@@ -14,4 +14,18 @@ export default class AccessTokenService {
   public async create(accessToken: AccessToken): Promise<AccessToken> {
     return await this.accessTokenRepository.save(accessToken);
   }
+
+  public async deleteByToken(token: string): Promise<any> {
+    const findTokenResponse = await this.accessTokenRepository.findOne({
+      where: {
+        token: token
+      }
+    });
+
+    if (!findTokenResponse) return undefined;
+
+    const deleteTokenResponse = await this.accessTokenRepository.delete(findTokenResponse.id);
+
+    return deleteTokenResponse;
+  }
 }

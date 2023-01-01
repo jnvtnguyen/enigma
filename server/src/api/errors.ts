@@ -23,3 +23,7 @@ export enum CreateWorkspaceError {
 export enum FetchWorkspaceError {
   UNAUTHORIZED = 'unauthorized'
 }
+
+export enum LogoutError {
+  INVALID_TOKEN = 'invalid_token'
+}

@@ -1,5 +1,6 @@
 import { authenticate } from '@/slices/auth';
 import { fetchProjectsSuccess } from '@/slices/project';
+import { fetchWorkspace } from './slices/workspace';
 
 //Signup
 export interface SignupParams {
@@ -34,6 +35,10 @@ export interface Workspace {
 
 export enum CreateWorkspaceError {
   KEY_DUPLICATE = 'key.duplicate'
+}
+
+export enum FetchWorkspaceError {
+  NOT_AUTHORIZED = 'unauthorized'
 }
 
 //Auth
@@ -90,7 +95,7 @@ export interface ProjectState {
 
 //Workspace State
 export interface WorkspaceState {
-  currentWorkspace: Workspace;
+  workspace: Workspace;
   loading: boolean;
   error: string;
 }
@@ -113,4 +118,10 @@ export interface AuthenticateAction {
 export interface FetchProjectsAction {
   type: typeof fetchProjectsSuccess.type;
   payload: FetchProjectsParams;
+}
+
+//Workspace
+export interface FetchWorkspaceAction {
+  type: typeof fetchWorkspace.type;
+  payload: string;
 }
