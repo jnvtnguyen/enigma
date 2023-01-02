@@ -4,12 +4,16 @@ import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import qs from 'qs';
 
-import { getProjectState } from '@/selectors';
+import { getProjects, getProjectState } from '@/selectors/project';
 import { fetchProjects } from '@/slices/project';
 import { FetchProjectsQuery } from '@/types';
 import history from '@/util/history';
 import { parseQuery, toQueryParams } from './query';
 import PageMeta from '@/components/PageMeta';
+import { getCurrentWorkspace } from '@/selectors/workspace';
+import BaseTable from '@/components/BaseTable';
+import ProjectRow from './Project';
+import styles from './styles.module.scss';
 
 //Projects Query Hook
 interface UseProjectsQuery {
@@ -40,11 +44,14 @@ export const useProjectsQuery = (): UseProjectsQuery => {
 const Projects: React.FC = () => {
   const { t } = useTranslation();
 
-  const { projects, loading, error } = useSelector(getProjectState);
+  const { loading, error } = useSelector(getProjectState);
+  const projects = useSelector(getProjects);
+  const workspace = useSelector(getCurrentWorkspace);
 
   const dispatch = useDispatch();
 
-  const _fetchProjects = (query: FetchProjectsQuery) => dispatch(fetchProjects({ query: query }));
+  const _fetchProjects = (query: FetchProjectsQuery) =>
+    dispatch(fetchProjects({ workspaceKey: workspace.key, query: query }));
 
   const { setQuery, query } = useProjectsQuery();
 
@@ -54,7 +61,18 @@ const Projects: React.FC = () => {
 
   return (
     <React.Fragment>
-      <PageMeta title={t('Projects')} />
+      <PageMeta title={`${workspace.name} / ${t('Projects')}`} />
+
+      <div className={styles.content}>
+        <BaseTable
+          loading={loading}
+          error={!!error}
+          rows={projects}
+          renderEmptyState={() => <tr></tr>}
+        >
+          {(project, index) => <ProjectRow key={project.id} project={project} />}
+        </BaseTable>
+      </div>
     </React.Fragment>
   );
 };

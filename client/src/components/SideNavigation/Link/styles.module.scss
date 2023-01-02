@@ -1,0 +1,39 @@
+$select-color: #306faf;
+$select-background: #e7f3ff;
+
+.icon {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin-right: 12px;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  height: 45px;
+  border-radius: 5px;
+  padding-left: 12px;
+  padding-right: 12px;
+  text-align: left;
+  cursor: pointer;
+  margin-bottom: 2px;
+}
+
+.content:hover {
+  color: $select-color;
+  background: $select-background;
+}
+
+.contentSelected {
+  color: $select-color;
+  background: $select-background;
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.text {
+}

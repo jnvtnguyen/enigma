@@ -3,17 +3,18 @@ import { Route, Routes } from 'react-router-dom';
 import loadable from '@loadable/component';
 
 import Navigation from '@/components/Navigation';
+import styles from './styles.module.scss';
 
 const WorkspaceLoadable = loadable(() => import('@/containers/Workspace'));
 
 const UserRoutes: React.FC = () => {
   return (
-    <React.Fragment>
+    <div className={styles.wrapper}>
       <Navigation />
       <Routes>
         <Route path="/:key" element={<WorkspaceLoadable />} />
       </Routes>
-    </React.Fragment>
+    </div>
   );
 };
 

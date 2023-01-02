@@ -20,7 +20,7 @@ export default class ProjectService {
     private readonly projectUserRepository: ProjectUserRepository
   ) {}
 
-  public async projects(workspaceId: number, query: ProjectsQuery): Promise<Project[]> {
+  public async projects(workspaceId: string, query: ProjectsQuery): Promise<Project[]> {
     let where: any = {
       workspaceId: workspaceId
     };

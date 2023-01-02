@@ -7,8 +7,12 @@ import { FetchProjectsAction, FetchProjectsQuery } from '@/types';
 import { toQueryParams } from '@/containers/Projects/query';
 import { getAccessToken } from '@/selectors/auth';
 
-const fetchProjectsRequest = async (query: FetchProjectsQuery, accessToken: string) => {
-  const response = await fetch(urls.api.project.fetchProjects(toQueryParams(query)), {
+const fetchProjectsRequest = async (
+  workspaceKey: string,
+  query: FetchProjectsQuery,
+  accessToken: string
+) => {
+  const response = await fetch(urls.api.project.fetchProjects(workspaceKey, toQueryParams(query)), {
     method: 'GET',
     headers: {
       ...authorizationHeaders(accessToken)
@@ -27,7 +31,12 @@ function* fetchProjectsSaga({ payload }: FetchProjectsAction): any {
   try {
     const accessToken = yield select(getAccessToken);
 
-    const { response, data } = yield call(fetchProjectsRequest, payload.query, accessToken);
+    const { response, data } = yield call(
+      fetchProjectsRequest,
+      payload.workspaceKey,
+      payload.query,
+      accessToken
+    );
 
     if (response.ok) {
       yield put(fetchProjectsSuccess(data.projects));

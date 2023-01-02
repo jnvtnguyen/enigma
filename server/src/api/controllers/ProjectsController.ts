@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Query, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { instanceToPlain } from 'class-transformer';
 
@@ -7,13 +7,12 @@ import CreateProjectRequest from '@/api/requests/CreateProjectRequest';
 import Project from '@/api/models/Project';
 import { CommonError, CreateProjectError } from '@/api/errors';
 
-@Controller('/workspaces/:workspace_id/projects')
+@Controller('/workspaces/:workspaceKey/projects')
 export default class ProjectsController {
   constructor(private readonly projectService: ProjectService) {}
 
   @Get('/')
   public async projects(
-    @Param('workspace_id', new ParseIntPipe()) workspace_id: number,
     @Req() request: Request,
     @Res() response: Response,
     @Query('search') search: string
@@ -23,7 +22,7 @@ export default class ProjectsController {
         search: search
       };
 
-      const projects = await this.projectService.projects(workspace_id, query);
+      const projects = await this.projectService.projects(request.workspace.id, query);
 
       const successResponse: any = {
         projects: instanceToPlain(projects)
@@ -43,19 +42,18 @@ export default class ProjectsController {
 
   @Post('/create')
   public async create(
-    @Param('workspace_id', new ParseIntPipe()) workspace_id: number,
     @Body() createProjectRequest: CreateProjectRequest,
     @Req() request: Request,
     @Res() response: Response
   ): Promise<any> {
     try {
       const projectByName = await this.projectService.findOneByWorkspace(
-        workspace_id,
+        request.workspace.id,
         createProjectRequest.name
       );
 
       const projectByKey = await this.projectService.findOneByWorkspace(
-        workspace_id,
+        request.workspace.id,
         createProjectRequest.key
       );
 
@@ -71,7 +69,7 @@ export default class ProjectsController {
       }
 
       const newProject = new Project();
-      newProject.workspace_id = workspace_id;
+      newProject.workspaceId = request.workspace.id;
       newProject.ownerId = request.user.id;
       newProject.name = createProjectRequest.name;
       newProject.key = createProjectRequest.key;

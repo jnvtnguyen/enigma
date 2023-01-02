@@ -10,7 +10,7 @@ import WorkspaceGroup from '@/api/models/WorkspaceGroup';
 import WorkspaceUser from '@/api/models/WorkspaceUser';
 import WorkspacesController from '@/api/controllers/WorkspacesController';
 import AuthMiddleware from '@/api/middleware/AuthMiddleware';
-
+import WorkspaceMiddleware from '@/api/middleware/WorkspaceMiddleware';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Workspace, User, AccessToken, WorkspaceUser, WorkspaceGroup])
@@ -22,5 +22,9 @@ import AuthMiddleware from '@/api/middleware/AuthMiddleware';
 export default class WorkspacesModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(AuthMiddleware).forRoutes(WorkspacesController);
+    consumer
+      .apply(WorkspaceMiddleware)
+      .exclude('/workspaces', '/create')
+      .forRoutes(WorkspacesController);
   }
 }

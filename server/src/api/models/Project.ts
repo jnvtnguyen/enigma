@@ -21,17 +21,20 @@ export default class Project extends BaseModel {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
+  @Column({ name: 'key' })
+  public key: string;
+
   @Column({ name: 'name' })
   public name: string;
 
+  @Column({ name: 'description' })
+  public description: string;
+
   @Column({ name: 'workspace_id' })
-  public workspace_id: string;
+  public workspaceId: string;
 
   @Column({ name: 'owner_id' })
   public ownerId: string;
-
-  @Column({ name: 'key' })
-  public key: string;
 
   @Exclude()
   @ManyToOne((type) => Workspace, (workspace) => workspace.projects)

@@ -71,6 +71,7 @@ export interface FetchProjectsQuery {
 }
 
 export interface FetchProjectsParams {
+  workspaceKey: string;
   query: FetchProjectsQuery;
 }
 

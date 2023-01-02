@@ -82,32 +82,11 @@ export default class WorkspacesController {
   }
 
   @Get('/:workspaceKey')
-  public async workspace(
-    @Param('workspaceKey') workspaceKey: string,
-    @Req() request: Request,
-    @Res() response: Response
-  ): Promise<any> {
+  public async workspace(@Req() request: Request, @Res() response: Response): Promise<any> {
     try {
-      const workspace = await this.workspaceService.findOneByKey(workspaceKey);
-
-      if (workspace) {
-        const workspaceByUser = await this.workspaceService.findOneByKey(
-          workspaceKey,
-          request.user.id
-        );
-
-        if (!workspaceByUser) {
-          const errorResponse = {
-            error: FetchWorkspaceError.UNAUTHORIZED
-          };
-
-          return response.status(401).send(errorResponse);
-        }
-      }
-
       const successResponse = {
         message: 'Find workspace successfully',
-        workspace: instanceToPlain(workspace)
+        workspace: instanceToPlain(request.workspace)
       };
 
       return response.status(200).send(successResponse);

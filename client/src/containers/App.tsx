@@ -32,35 +32,33 @@ const App: React.FC = () => {
   const isAuthenticated = useSelector(getIsAuthenticated);
 
   return (
-    <UserWrapper>
-      <Suspense fallback={<LoadingPage />}>
+    <Suspense fallback={<LoadingPage />}>
+      {!isAuthenticated ? (
         <Routes>
-          {!isAuthenticated && (
-            <React.Fragment>
-              <Route path="/signup" element={<SignupLoadable />} />
-              <Route path="/login" element={<LoginLoadable />} />
-            </React.Fragment>
-          )}
-          {!isAuthenticated ? (
-            <Route path="*" element={<Navigate replace to="/login" />} />
-          ) : (
-            <React.Fragment>
-              {!finishedLanding ? (
-                <React.Fragment>
-                  <Route path="/landing" element={<LandingLoadable />} />
-                  <Route path="*" element={<Navigate replace to="/landing" />} />
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  <Route path="*" element={<UserRoutesLoadable />} />
-                </React.Fragment>
-              )}
-            </React.Fragment>
-          )}
-          <Route path="*" element={<NotFound />} />
+          <Route path="/signup" element={<SignupLoadable />} />
+          <Route path="/login" element={<LoginLoadable />} />
+          <Route path="*" element={<Navigate replace to="/login" />} />
         </Routes>
-      </Suspense>
-    </UserWrapper>
+      ) : (
+        <UserWrapper>
+          <Routes>
+            {!finishedLanding ? (
+              <React.Fragment>
+                <Route path="/landing" element={<LandingLoadable />} />
+                <Route path="*" element={<Navigate replace to="/landing" />} />
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <Route path="*" element={<UserRoutesLoadable />} />
+              </React.Fragment>
+            )}
+          </Routes>
+        </UserWrapper>
+      )}
+      <Routes>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
   );
 };
 

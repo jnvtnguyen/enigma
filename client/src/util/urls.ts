@@ -14,8 +14,8 @@ const urls = {
     signup: `${API_GLOBAL_PREFIX}/user/signup`,
     login: `${API_GLOBAL_PREFIX}/user/login`,
     project: {
-      fetchProjects: (queryParams: object) => {
-        return `/api/projects${stringifyQuery(queryParams)}`;
+      fetchProjects: (workspaceKey: string, queryParams: object) => {
+        return `/api/workspaces/${workspaceKey}/projects${stringifyQuery(queryParams)}`;
       }
     },
     workspace: {

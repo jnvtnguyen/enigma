@@ -1,0 +1,34 @@
+.sideNavigation {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  top: 60px;
+  z-index: 1;
+}
+
+.navigation {
+  width: 240px;
+  height: 100%;
+  position: relative;
+}
+
+.navigation::after {
+  content: '';
+  width: 2px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 100%;
+  background: #e6e6e6;
+}
+
+.content {
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+
+.linksContainer {
+  padding: 16px;
+  width: 100%;
+}
