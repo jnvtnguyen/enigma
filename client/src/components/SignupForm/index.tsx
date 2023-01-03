@@ -30,6 +30,13 @@ interface FieldErrors {
   confirmPassword?: string;
 }
 
+export interface PasswordStrengthLevels {
+  length: boolean;
+  upperLowerCase: boolean;
+  number: boolean;
+  symbol: boolean;
+}
+
 const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
   const { t } = useTranslation();
 
@@ -41,6 +48,13 @@ const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
     confirmPassword: ''
   });
 
+  const [passwordStrengthLevels, setPasswordStrengthLevels] = useState<PasswordStrengthLevels>({
+    length: false,
+    upperLowerCase: false,
+    number: false,
+    symbol: false
+  });
+
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
   const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
@@ -50,6 +64,51 @@ const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
   const [emailSubmitted, setEmailSubmitted] = useState<string>('');
 
   const [hasPasswordFocus, setHasPasswordFocus] = useState<boolean>(false);
+
+  const validatePasswordStrength = (): boolean => {
+    let passwordStrong: boolean = true;
+
+    setPasswordStrengthLevels({
+      length: true,
+      upperLowerCase: true,
+      number: true,
+      symbol: true
+    });
+
+    if (!(fields.password.length >= 8)) {
+      setPasswordStrengthLevels((prevState) => ({
+        ...prevState,
+        length: false
+      }));
+      passwordStrong = false;
+    }
+
+    if (!/^(?=.*[A-Z]).*(?=.*[a-z]).*$/.test(fields.password)) {
+      setPasswordStrengthLevels((prevState) => ({
+        ...prevState,
+        upperLowerCase: false
+      }));
+      passwordStrong = false;
+    }
+
+    if (!/^(?=.*[0-9]).*$/.test(fields.password)) {
+      setPasswordStrengthLevels((prevState) => ({
+        ...prevState,
+        number: false
+      }));
+      passwordStrong = false;
+    }
+
+    if (!/^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).*$/.test(fields.password)) {
+      setPasswordStrengthLevels((prevState) => ({
+        ...prevState,
+        symbol: false
+      }));
+      passwordStrong = false;
+    }
+
+    return passwordStrong;
+  };
 
   const validateFields = (): boolean => {
     let valid = true;
@@ -115,8 +174,17 @@ const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
     return valid;
   };
 
-  const handlePasswordStrengthChange = (passwordStrong: boolean) => {
+  const changePasswordStrength = () => {
+    const passwordStrong = validatePasswordStrength();
     setIsPasswordStrong(passwordStrong);
+  };
+
+  const handlePasswordKeyUp = () => {
+    changePasswordStrength();
+  };
+
+  const handlePasswordBlur = () => {
+    changePasswordStrength();
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -166,7 +234,6 @@ const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
         onBlur={handleBlur}
         error={!!fieldErrors.firstName}
         errorMessage={fieldErrors.firstName}
-        autoFocus={true}
       />
 
       <Input
@@ -203,17 +270,13 @@ const SignupForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
         placeholder={t('Password')}
         value={fields.password}
         onChange={handleChange}
-        onKeyUp={handleKeyUp}
+        onKeyUp={handlePasswordKeyUp}
         onFocus={handlePasswordFocus}
-        onBlur={handleBlur}
+        onBlur={handlePasswordBlur}
         error={(hasPasswordFocus || formSubmitted) && !isPasswordStrong}
         errorMessage={
-          (hasPasswordFocus || formSubmitted) && (
-            <PasswordStrength
-              password={fields.password}
-              onPasswordStrengthChange={handlePasswordStrengthChange}
-            />
-          )
+          (hasPasswordFocus || formSubmitted) &&
+          !isPasswordStrong && <PasswordStrength passwordStrengthLevels={passwordStrengthLevels} />
         }
       />
 

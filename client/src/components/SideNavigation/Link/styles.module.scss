@@ -1,23 +1,14 @@
 $select-color: #306faf;
 $select-background: #e7f3ff;
 
-.icon {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  margin-right: 12px;
-}
-
 .content {
   display: flex;
   align-items: center;
-  height: 45px;
+  height: 42px;
   border-radius: 5px;
-  padding-left: 12px;
-  padding-right: 12px;
+  padding: 0px 12px;
   text-align: left;
   cursor: pointer;
-  margin-bottom: 2px;
 }
 
 .content:hover {
@@ -33,6 +24,17 @@ $select-background: #e7f3ff;
 .link {
   text-decoration: none;
   color: inherit;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  color: rgba(9, 30, 66, 0.3);
 }
 
 .text {

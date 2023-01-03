@@ -1,4 +1,5 @@
 import React from 'react';
+import cn from 'classnames';
 
 import styles from './styles.module.scss';
 
@@ -27,7 +28,7 @@ const BaseTable: React.FC<Props> = ({
     return (
       <table className={styles.table}>
         {renderHeaders && <thead className={styles.thead}>{renderHeaders()}</thead>}
-        <tbody className={styles.tbody}>
+        <tbody className={cn(styles.tbody, loading && styles.loading)}>
           {!loading && !rows.length ? renderEmptyState() : renderTableRows()}
         </tbody>
       </table>

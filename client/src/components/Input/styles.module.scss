@@ -1,17 +1,45 @@
 $error-color: #f25f25;
 $border-color: #c1c5c8;
+$border-focused-color: rgb(76, 154, 255);
 
 .label {
   color: #474646;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 500;
   display: block;
   padding-bottom: 6px;
   user-select: none;
 }
 
 .inputWrapper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid;
+  border-radius: 3px;
+  border-color: $border-color;
+  height: 46px;
+  width: 100%;
+  box-sizing: border-box;
+  background: white;
+  cursor: text;
+}
+
+.inputWrapper:focus-within {
+  border-color: $border-focused-color;
+}
+
+.innerInputWrapper {
+  padding: 0 10px;
+  width: 100%;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+}
+
+.elementBeforeInput {
+  margin-inline-end: 8px;
   display: flex;
+  align-items: center;
 }
 
 .inputPrefix {
@@ -21,37 +49,29 @@ $border-color: #c1c5c8;
   padding-right: 10px;
   background: rgba(0, 0, 0, 0.08);
   border-radius: 3px 0px 0px 3px;
-  border: 1px solid $border-color;
-  border-right: 0px;
   font-size: 1em;
+  height: 100%;
 }
 
 .input {
-  border: 1px solid $border-color;
-  border-radius: 3px;
-  height: 46px;
-  padding: 0 10px;
   color: #000;
   font-size: 1em;
   outline: none;
-  min-width: 50px;
-  max-width: 635px;
   box-sizing: border-box;
   font-family: inherit;
+  border: 0;
+  padding: 0;
+  width: 100%;
+  position: relative;
+  height: 100%;
+}
+
+.wrapper {
+  padding: 4px 0 4px 0;
 }
 
 .inputWithPrefix {
   border-radius: 0px 3px 3px 0px;
-}
-
-.full {
-  width: 100%;
-}
-
-.input:focus {
-  border-color: rgba(82, 168, 236, 0.9);
-  box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgb(82 168 236 / 60%);
-  outline: 0;
 }
 
 .error {

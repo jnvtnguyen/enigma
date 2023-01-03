@@ -1,25 +1,11 @@
 .sideNavigation {
-  position: fixed;
-  bottom: 0px;
-  left: 0px;
-  top: 60px;
   z-index: 1;
 }
 
 .navigation {
-  width: 240px;
+  width: 200px;
   height: 100%;
   position: relative;
-}
-
-.navigation::after {
-  content: '';
-  width: 2px;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 100%;
-  background: #e6e6e6;
 }
 
 .content {
@@ -29,6 +15,18 @@
 }
 
 .linksContainer {
-  padding: 16px;
   width: 100%;
+}
+
+.divider {
+  color: rgb(107, 119, 140);
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 0 12px;
+  margin: 32px 0px 8px;
+  font-size: 14px;
+}
+
+.divider:first-child {
+  margin-top: 0;
 }

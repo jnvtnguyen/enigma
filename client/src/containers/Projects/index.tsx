@@ -6,13 +6,13 @@ import qs from 'qs';
 
 import { getProjects, getProjectState } from '@/selectors/project';
 import { fetchProjects } from '@/slices/project';
-import { FetchProjectsQuery } from '@/types';
+import { FetchProjectsFilters, FetchProjectsQuery } from '@/types';
 import history from '@/util/history';
 import { parseQuery, toQueryParams } from './query';
 import PageMeta from '@/components/PageMeta';
 import { getCurrentWorkspace } from '@/selectors/workspace';
-import BaseTable from '@/components/BaseTable';
-import ProjectRow from './Project';
+import ProjectTable from '@/components/ProjectTable';
+import ProjectsFilters from './Filters';
 import styles from './styles.module.scss';
 
 //Projects Query Hook
@@ -34,7 +34,7 @@ export const useProjectsQuery = (): UseProjectsQuery => {
         { ...queryParams, ...toQueryParams(fetchProjectsQuery) },
         { skipNulls: true }
       );
-      history.push(`${pathname}${newQueryString}`);
+      history.push(`${pathname}?${newQueryString}`);
     },
     [history, pathname, queryParams]
   );
@@ -57,21 +57,21 @@ const Projects: React.FC = () => {
 
   useEffect(() => {
     _fetchProjects(query);
-  }, []);
+  }, [query]);
+
+  const handleFilterChange = (filters: FetchProjectsFilters) => {
+    setQuery({
+      filters
+    });
+  };
 
   return (
     <React.Fragment>
       <PageMeta title={`${workspace.name} / ${t('Projects')}`} />
 
       <div className={styles.content}>
-        <BaseTable
-          loading={loading}
-          error={!!error}
-          rows={projects}
-          renderEmptyState={() => <tr></tr>}
-        >
-          {(project, index) => <ProjectRow key={project.id} project={project} />}
-        </BaseTable>
+        <ProjectsFilters filters={query.filters} onFilterChange={handleFilterChange} />
+        <ProjectTable loading={loading} error={error} projects={projects} />
       </div>
     </React.Fragment>
   );

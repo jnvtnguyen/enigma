@@ -3,85 +3,16 @@ import cn from 'classnames';
 import { UilCheckCircle, UilExclamationCircle } from '@iconscout/react-unicons';
 import { useTranslation } from 'react-i18next';
 
+import { PasswordStrengthLevels } from '@/components/SignupForm';
+
 import styles from './styles.module.scss';
 
 interface Props {
-  password: string;
-  onPasswordStrengthChange: (passwordStrong: boolean) => any;
+  passwordStrengthLevels: PasswordStrengthLevels;
 }
 
-interface PasswordStrengthLevels {
-  length: boolean;
-  upperLowerCase: boolean;
-  number: boolean;
-  symbol: boolean;
-}
-
-const PasswordStrength: React.FC<Props> = ({ password, onPasswordStrengthChange }) => {
+const PasswordStrength: React.FC<Props> = ({ passwordStrengthLevels }) => {
   const { t } = useTranslation();
-
-  const [passwordStrengthLevels, setPasswordStrengthLevels] = useState<PasswordStrengthLevels>({
-    length: false,
-    upperLowerCase: false,
-    number: false,
-    symbol: false
-  });
-
-  const [isPasswordStrong, setIsPasswordStrong] = useState<boolean>(false);
-
-  const validatePasswordStrength = (): boolean => {
-    let passwordStrong: boolean = true;
-
-    setPasswordStrengthLevels({
-      length: true,
-      upperLowerCase: true,
-      number: true,
-      symbol: true
-    });
-
-    if (!(password.length >= 8)) {
-      setPasswordStrengthLevels((prevState) => ({
-        ...prevState,
-        length: false
-      }));
-      passwordStrong = false;
-    }
-
-    if (!/^(?=.*[A-Z]).*(?=.*[a-z]).*$/.test(password)) {
-      setPasswordStrengthLevels((prevState) => ({
-        ...prevState,
-        upperLowerCase: false
-      }));
-      passwordStrong = false;
-    }
-
-    if (!/^(?=.*[0-9]).*$/.test(password)) {
-      setPasswordStrengthLevels((prevState) => ({
-        ...prevState,
-        number: false
-      }));
-      passwordStrong = false;
-    }
-
-    if (!/^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).*$/.test(password)) {
-      setPasswordStrengthLevels((prevState) => ({
-        ...prevState,
-        symbol: false
-      }));
-      passwordStrong = false;
-    }
-
-    return passwordStrong;
-  };
-
-  useEffect(() => {
-    const passwordStrong: boolean = validatePasswordStrength();
-
-    setIsPasswordStrong(passwordStrong);
-    onPasswordStrengthChange(passwordStrong);
-  }, [password]);
-
-  if (isPasswordStrong) return;
 
   return (
     <div className={styles.container}>

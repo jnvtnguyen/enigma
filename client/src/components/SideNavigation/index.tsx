@@ -4,9 +4,9 @@ import SideNavigationLink from './Link';
 import styles from './styles.module.scss';
 
 export type Link = {
-  icon?: React.ReactNode;
   to?: string;
   text: string;
+  divider?: boolean;
   links?: Link[];
 };
 
@@ -22,7 +22,15 @@ const SideNavigation: React.FC<Props> = ({ header, links }) => {
         <div className={styles.content}>
           <div className={styles.linksContainer}>
             {links.map((link, index) => (
-              <SideNavigationLink key={index} icon={link.icon} to={link.to} text={link.text} />
+              <React.Fragment key={`side-navigation-component-${index}`}>
+                {link.divider ? (
+                  <div className={styles.divider}>
+                    <span>{link.text}</span>
+                  </div>
+                ) : (
+                  <SideNavigationLink to={link.to} text={link.text} links={link.links} />
+                )}
+              </React.Fragment>
             ))}
           </div>
         </div>

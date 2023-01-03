@@ -12,6 +12,8 @@ import LoadingPage from '@/components/LoadingPage';
 import { FetchWorkspaceError } from '@/types';
 import NotAuthorized from '@/components/NotAuthorized';
 import SideNavigation from '@/components/SideNavigation';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import BreadcrumbItem from '@/components/Breadcrumbs/BreadcrumbItem';
 import styles from './styles.module.scss';
 
 const ProjectsLoadable = loadable(() => import('@/containers/Projects'));
@@ -41,23 +43,52 @@ const Workspace: React.FC = () => {
   return (
     <React.Fragment>
       <PageMeta title={workspace.name} />
-      <SideNavigation
-        links={[
-          {
-            icon: <UilFolder />,
-            to: `/${key}`,
-            text: t('Projects')
-          },
-          {
-            icon: <UilSetting />,
-            text: t('Settings')
-          }
-        ]}
-      />
-      <div className={styles.content}>
-        <Routes>
-          <Route path="/" element={<ProjectsLoadable />} />
-        </Routes>
+
+      <div className={styles.wrapper}>
+        <div className={styles.headerWrapper}>
+          <Breadcrumbs className={styles.breadcrumb}>
+            <BreadcrumbItem href={`/${key}`} text={`${workspace.name}`} />
+          </Breadcrumbs>
+          <h1 className={styles.header}>
+            {workspace.name} / {t('Projects')}
+          </h1>
+        </div>
+        <div className={styles.contentLine}></div>
+        <div className={styles.content}>
+          <SideNavigation
+            links={[
+              {
+                text: t('Projects'),
+                divider: true
+              },
+              {
+                to: `/${key}`,
+                text: t('Projects')
+              },
+              {
+                text: 'Settings',
+                divider: true
+              },
+              {
+                to: `/${key}/settings`,
+                text: t('Basic Settings')
+              },
+              {
+                to: `/${key}/users`,
+                text: t('Users')
+              },
+              {
+                to: `/${key}/groups`,
+                text: t('User Groups')
+              }
+            ]}
+          />
+          <div className={styles.innerContent}>
+            <Routes>
+              <Route path="/" element={<ProjectsLoadable />} />
+            </Routes>
+          </div>
+        </div>
       </div>
     </React.Fragment>
   );

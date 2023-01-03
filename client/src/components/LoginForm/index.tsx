@@ -130,7 +130,6 @@ const LoginForm: React.FC<Props> = ({ onSubmit, loading, error }) => {
         onBlur={handleBlur}
         error={!!fieldErrors.email}
         errorMessage={fieldErrors.email}
-        autoFocus={true}
       />
       <Input
         name={'password'}
