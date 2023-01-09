@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Project } from '@/types';
 import BaseTableCell from '@/components/BaseTable/Cell';
+import BaseTableRow from '@/components/BaseTable/Row';
 import styles from './styles.module.scss';
 
 type Props = {
@@ -10,11 +11,11 @@ type Props = {
 
 const ProjectTableRow: React.FC<Props> = ({ project }) => {
   return (
-    <tr className={styles.row}>
+    <BaseTableRow>
       <BaseTableCell>{project.name}</BaseTableCell>
       <BaseTableCell>{project.description}</BaseTableCell>
       <BaseTableCell>{project.modifiedDate}</BaseTableCell>
-    </tr>
+    </BaseTableRow>
   );
 };
 

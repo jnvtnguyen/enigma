@@ -29,6 +29,18 @@ export interface Workspace {
   id?: string;
   name: string;
   key: string;
+  defaultGroupId: string;
+  createdDate: string;
+  modifiedDate: string;
+}
+
+export type ProjectPermission = 'read' | 'write' | 'admin';
+
+export interface WorkspaceGroup {
+  id?: string;
+  name: string;
+  default_permission: ProjectPermission;
+  userCount: number;
   createdDate: string;
   modifiedDate: string;
 }

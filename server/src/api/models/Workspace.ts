@@ -33,7 +33,6 @@ export default class Workspace extends BaseModel {
   @Column({ name: 'owner_id' })
   public ownerId: string;
 
-  @Exclude()
   @Column({ name: 'default_group_id', nullable: true })
   public defaultGroupId: string;
 

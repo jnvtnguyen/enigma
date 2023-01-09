@@ -13,9 +13,17 @@ type Props = {
   workspace: Workspace;
   children: React.ReactNode;
   title: string;
+  subTitle?: string;
 };
 
-const WorkspaceLayout: React.FC<Props> = ({ header, breadcrumbs, workspace, children, title }) => {
+const WorkspaceLayout: React.FC<Props> = ({
+  header,
+  breadcrumbs,
+  workspace,
+  children,
+  title,
+  subTitle
+}) => {
   return (
     <React.Fragment>
       <PageMeta title={`${workspace.name} / ${title}`} />
@@ -28,6 +36,7 @@ const WorkspaceLayout: React.FC<Props> = ({ header, breadcrumbs, workspace, chil
           <h1 className={styles.header}>
             {workspace.name} / {header}
           </h1>
+          {subTitle && <h4 className={styles.subHeader}>{subTitle}</h4>}
         </div>
         <div className={styles.contentLine}></div>
         <div className={styles.content}>

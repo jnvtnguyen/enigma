@@ -29,6 +29,7 @@ const UserWrapper: React.FC<Props> = ({ children }) => {
 
         _setUser(response.user);
       } catch (error) {
+        console.error(error);
         _logout();
       }
     };

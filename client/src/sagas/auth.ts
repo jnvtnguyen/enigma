@@ -33,15 +33,15 @@ function* authenticateSaga({ payload }: AuthenticateAction): any {
 
 function* logoutSaga(): any {
   try {
-    const response = yield call(httpRequest().post, urls.api.user.logout, true);
+    yield call(httpRequest().post, urls.api.user.logout, true);
 
-    if (response.ok || response.status === 401) {
-      localStorage.removeItem('user');
-      window.location.replace(urls.login);
-      return;
-    }
+    localStorage.removeItem('user');
+    window.location.replace(urls.login);
+    return;
   } catch (error) {
-    console.error(error);
+    localStorage.removeItem('user');
+    window.location.replace(urls.login);
+    return;
   }
 }
 

@@ -16,9 +16,12 @@ export default class WorkspaceGroupService {
       workspaceId: workspaceId
     };
 
-    const groups = await this.workspaceGroupRepository.find({
-      where: where
-    });
+    const groups = await this.workspaceGroupRepository
+      .createQueryBuilder('workspace_group')
+      .where(where)
+      .leftJoinAndSelect('workspace_group.users', 'workspace_user')
+      .loadRelationCountAndMap('workspace_group.userCount', 'workspace_group.users')
+      .getMany();
 
     return groups;
   }
