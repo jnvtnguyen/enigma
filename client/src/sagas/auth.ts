@@ -3,9 +3,9 @@ import { all, takeLatest, call, select } from 'redux-saga/effects';
 import { authenticate, logout } from '@/slices/auth';
 import { AuthenticateAction } from '@/types';
 import urls from '@/util/urls';
-import { authorizationHeaders } from '@/util/headers';
-import { getAccessToken } from '@/selectors/auth';
+import { httpRequest } from '@/util/http-request';
 
+/*
 const logoutRequest = async (accessToken: string) => {
   const response = await fetch(urls.api.user.logout, {
     method: 'POST',
@@ -21,6 +21,7 @@ const logoutRequest = async (accessToken: string) => {
     data
   };
 };
+*/
 
 function* authenticateSaga({ payload }: AuthenticateAction): any {
   try {
@@ -32,17 +33,13 @@ function* authenticateSaga({ payload }: AuthenticateAction): any {
 
 function* logoutSaga(): any {
   try {
-    const accessToken = yield select(getAccessToken);
-
-    const { response, data } = yield call(logoutRequest, accessToken);
+    const response = yield call(httpRequest().post, urls.api.user.logout, true);
 
     if (response.ok || response.status === 401) {
       localStorage.removeItem('user');
       window.location.replace(urls.login);
       return;
     }
-
-    console.error(data.error);
   } catch (error) {
     console.error(error);
   }

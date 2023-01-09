@@ -12,7 +12,7 @@ const UserRoutes: React.FC = () => {
     <div className={styles.wrapper}>
       <Navigation />
       <Routes>
-        <Route path="/:key" element={<WorkspaceLoadable />} />
+        <Route path="/:key/*" element={<WorkspaceLoadable />} />
       </Routes>
     </div>
   );

@@ -11,6 +11,7 @@ interface Environment {
     port: number;
     globalPrefix: string;
     jwtSecret: string;
+    jwtExpire: string;
     cryptoSecret: string;
   };
   directories: {
@@ -37,6 +38,7 @@ const environment: Environment = {
     port: Number(process.env['APP_PORT']) || 8000,
     globalPrefix: process.env['APP_GLOBAL_PREFIX'],
     jwtSecret: process.env['APP_JWT_SECRET'],
+    jwtExpire: process.env['APP_JWT_EXPIRE'],
     cryptoSecret: process.env['APP_CRYPTO_SECRET']
   },
   directories: {

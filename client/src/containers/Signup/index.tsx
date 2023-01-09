@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import PageMeta from '@/components/PageMeta';
 import SignupForm from '@/components/SignupForm';
 import urls from '@/util/urls';
+import { httpRequest } from '@/util/http-request';
 import authStyles from '@/containers/shared/auth.module.scss';
 
 const Signup: React.FC = () => {
@@ -22,24 +23,16 @@ const Signup: React.FC = () => {
   ) => {
     try {
       setLoading(true);
-      const response = await fetch(urls.api.signup, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ firstName, lastName, email, password })
+      await httpRequest<any>({ authorized: false }).post(urls.api.signup, {
+        firstName,
+        lastName,
+        email,
+        password
       });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        window.location.replace(urls.login);
-      }
-
-      setError(data.error);
+      window.location.replace(urls.login);
     } catch (error) {
       console.error(error);
-      setError('request_error');
+      setError(error.error);
     }
 
     setLoading(false);

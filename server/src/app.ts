@@ -5,6 +5,7 @@ import environment from '@/environment';
 import UserModule from '@/api/modules/UserModule';
 import WorkspacesModule from '@/api/modules/WorkspacesModule';
 import ProjectsModule from '@/api/modules/ProjectsModule';
+import GroupsModule from './api/modules/GroupsModule';
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import ProjectsModule from '@/api/modules/ProjectsModule';
     }),
     UserModule,
     WorkspacesModule,
-    ProjectsModule
+    ProjectsModule,
+    GroupsModule
   ]
 })
 export default class App {}

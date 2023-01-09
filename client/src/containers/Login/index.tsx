@@ -7,6 +7,7 @@ import PageMeta from '@/components/PageMeta';
 import LoginForm from '@/components/LoginForm';
 import urls from '@/util/urls';
 import { authenticate } from '@/slices/auth';
+import { httpRequest } from '@/util/http-request';
 import authStyles from '@/containers/shared/auth.module.scss';
 
 const Login: React.FC = () => {
@@ -24,31 +25,22 @@ const Login: React.FC = () => {
   const handleSubmit = async (email: string, password: string) => {
     try {
       setLoading(true);
-      const response = await fetch(urls.api.login, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
+      const response = await httpRequest<any>({ authorized: false }).post(urls.api.login, {
+        email,
+        password
       });
 
-      const data = await response.json();
+      const { accessToken, user } = response.data;
 
-      if (response.ok) {
-        const { accessToken, user } = data.data;
+      _authenticate(accessToken);
 
-        _authenticate(accessToken);
-
-        if (!user.finishedLanding) {
-          window.location.replace(urls.landing);
-        } else {
-          window.location.replace(urls.workspace.index(user.defaultWorkspace.key));
-        }
+      if (!user.finishedLanding) {
+        window.location.replace(urls.landing);
+      } else {
+        window.location.replace(urls.workspace.index(user.defaultWorkspace.key));
       }
-      setError(data.error);
     } catch (error) {
-      console.error(error);
-      setError('request_error');
+      setError(error.error);
     }
 
     setLoading(false);

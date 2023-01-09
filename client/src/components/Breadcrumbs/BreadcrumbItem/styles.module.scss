@@ -1,5 +1,12 @@
 .breadcrumbItem {
   display: flex;
+  color: #838d97;
+}
+
+.breadcrumbItem:not(:last-child)::after {
+  padding: 0px 8px;
+  content: '/';
+  text-align: center;
 }
 
 .link {

@@ -9,11 +9,11 @@ import { fetchProjects } from '@/slices/project';
 import { FetchProjectsFilters, FetchProjectsQuery } from '@/types';
 import history from '@/util/history';
 import { parseQuery, toQueryParams } from './query';
-import PageMeta from '@/components/PageMeta';
 import { getCurrentWorkspace } from '@/selectors/workspace';
 import ProjectTable from '@/components/ProjectTable';
 import ProjectsFilters from './Filters';
 import styles from './styles.module.scss';
+import WorkspaceLayout from '../WorkspaceLayout';
 
 //Projects Query Hook
 interface UseProjectsQuery {
@@ -67,12 +67,12 @@ const Projects: React.FC = () => {
 
   return (
     <React.Fragment>
-      <PageMeta title={`${workspace.name} / ${t('Projects')}`} />
-
-      <div className={styles.content}>
-        <ProjectsFilters filters={query.filters} onFilterChange={handleFilterChange} />
-        <ProjectTable loading={loading} error={error} projects={projects} />
-      </div>
+      <WorkspaceLayout header={t('Projects')} workspace={workspace} title={t('Projects')}>
+        <div className={styles.content}>
+          <ProjectsFilters filters={query.filters} onFilterChange={handleFilterChange} />
+          <ProjectTable loading={loading} error={error} projects={projects} />
+        </div>
+      </WorkspaceLayout>
     </React.Fragment>
   );
 };

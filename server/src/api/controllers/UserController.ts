@@ -98,7 +98,7 @@ export default class UserController {
       if (user) {
         if (await User.comparePassword(user.password, loginRequest.password)) {
           const token = jwt.sign({ id: user.id }, environment.app.jwtSecret, {
-            expiresIn: '4h'
+            expiresIn: environment.app.jwtExpire
           });
           if (token) {
             const newAccessToken = new AccessToken();

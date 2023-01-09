@@ -6,7 +6,6 @@ import styles from './styles.module.scss';
 export type Link = {
   to?: string;
   text: string;
-  divider?: boolean;
   links?: Link[];
 };
 
@@ -23,13 +22,7 @@ const SideNavigation: React.FC<Props> = ({ header, links }) => {
           <div className={styles.linksContainer}>
             {links.map((link, index) => (
               <React.Fragment key={`side-navigation-component-${index}`}>
-                {link.divider ? (
-                  <div className={styles.divider}>
-                    <span>{link.text}</span>
-                  </div>
-                ) : (
-                  <SideNavigationLink to={link.to} text={link.text} links={link.links} />
-                )}
+                <SideNavigationLink to={link.to} text={link.text} links={link.links} />
               </React.Fragment>
             ))}
           </div>

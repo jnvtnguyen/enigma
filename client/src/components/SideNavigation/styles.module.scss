@@ -1,9 +1,15 @@
 .sideNavigation {
   z-index: 1;
+  position: fixed;
+  left: 0;
+  top: 60px;
+  bottom: 0;
+  background: rgb(244, 245, 247);
+  border-right: 1px solid #d9d9d9;
 }
 
 .navigation {
-  width: 200px;
+  width: 240px;
   height: 100%;
   position: relative;
 }

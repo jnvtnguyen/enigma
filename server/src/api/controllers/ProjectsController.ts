@@ -73,6 +73,7 @@ export default class ProjectsController {
       newProject.ownerId = request.user.id;
       newProject.name = createProjectRequest.name;
       newProject.key = createProjectRequest.key;
+      newProject.description = createProjectRequest.description;
 
       const createProjectResponse = await this.projectService.create(newProject);
 

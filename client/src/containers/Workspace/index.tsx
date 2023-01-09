@@ -5,23 +5,23 @@ import { UilFolder, UilSetting } from '@iconscout/react-unicons';
 import { useTranslation } from 'react-i18next';
 import loadable from '@loadable/component';
 
+import WorkspaceSideNavigation from '@/containers/Workspace/SideNavigation';
 import PageMeta from '@/components/PageMeta';
 import { getCurrentWorkspace, getWorkspaceState } from '@/selectors/workspace';
 import { fetchWorkspace } from '@/slices/workspace';
 import LoadingPage from '@/components/LoadingPage';
 import { FetchWorkspaceError } from '@/types';
 import NotAuthorized from '@/components/NotAuthorized';
-import SideNavigation from '@/components/SideNavigation';
-import Breadcrumbs from '@/components/Breadcrumbs';
-import BreadcrumbItem from '@/components/Breadcrumbs/BreadcrumbItem';
-import styles from './styles.module.scss';
 
-const ProjectsLoadable = loadable(() => import('@/containers/Projects'));
+const ProjectsLoadable = loadable(() => import('@/containers/Workspace/Projects'));
+
+const SettingsLoadable = loadable(() => import('@/containers/Workspace/Settings'));
+const UsersLoadable = loadable(() => import('@/containers/Workspace/Users'));
+const GroupsLoadable = loadable(() => import('@/containers/Workspace/Groups'));
 
 const Workspace: React.FC = () => {
   const dispatch = useDispatch();
   const { key } = useParams();
-  const { t } = useTranslation();
 
   const workspace = useSelector(getCurrentWorkspace);
   const { loading, error } = useSelector(getWorkspaceState);
@@ -43,53 +43,13 @@ const Workspace: React.FC = () => {
   return (
     <React.Fragment>
       <PageMeta title={workspace.name} />
-
-      <div className={styles.wrapper}>
-        <div className={styles.headerWrapper}>
-          <Breadcrumbs className={styles.breadcrumb}>
-            <BreadcrumbItem href={`/${key}`} text={`${workspace.name}`} />
-          </Breadcrumbs>
-          <h1 className={styles.header}>
-            {workspace.name} / {t('Projects')}
-          </h1>
-        </div>
-        <div className={styles.contentLine}></div>
-        <div className={styles.content}>
-          <SideNavigation
-            links={[
-              {
-                text: t('Projects'),
-                divider: true
-              },
-              {
-                to: `/${key}`,
-                text: t('Projects')
-              },
-              {
-                text: 'Settings',
-                divider: true
-              },
-              {
-                to: `/${key}/settings`,
-                text: t('Basic Settings')
-              },
-              {
-                to: `/${key}/users`,
-                text: t('Users')
-              },
-              {
-                to: `/${key}/groups`,
-                text: t('User Groups')
-              }
-            ]}
-          />
-          <div className={styles.innerContent}>
-            <Routes>
-              <Route path="/" element={<ProjectsLoadable />} />
-            </Routes>
-          </div>
-        </div>
-      </div>
+      <WorkspaceSideNavigation workspaceKey={workspace.key} />
+      <Routes>
+        <Route path="/" element={<ProjectsLoadable />} />
+        <Route path="/settings" element={<SettingsLoadable />} />
+        <Route path="/users" element={<UsersLoadable />} />
+        <Route path="/groups" element={<GroupsLoadable />} />
+      </Routes>
     </React.Fragment>
   );
 };

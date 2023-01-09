@@ -1,53 +1,22 @@
 import { all, select, takeLatest, put, call } from 'redux-saga/effects';
 
 import urls from '@/util/urls';
-import { authorizationHeaders } from '@/util/headers';
 import { fetchProjects, fetchProjectsError, fetchProjectsSuccess } from '@/slices/project';
-import { FetchProjectsAction, FetchProjectsQuery } from '@/types';
-import { toQueryParams } from '@/containers/Projects/query';
-import { getAccessToken } from '@/selectors/auth';
-
-const fetchProjectsRequest = async (
-  workspaceKey: string,
-  query: FetchProjectsQuery,
-  accessToken: string
-) => {
-  const response = await fetch(urls.api.project.fetchProjects(workspaceKey, toQueryParams(query)), {
-    method: 'GET',
-    headers: {
-      ...authorizationHeaders(accessToken)
-    }
-  });
-
-  const data = await response.json();
-
-  return {
-    response,
-    data
-  };
-};
+import { FetchProjectsAction } from '@/types';
+import { toQueryParams } from '@/containers/Workspace/Projects/query';
+import { httpRequest } from '@/util/http-request';
 
 function* fetchProjectsSaga({ payload }: FetchProjectsAction): any {
   try {
-    const accessToken = yield select(getAccessToken);
-
-    const { response, data } = yield call(
-      fetchProjectsRequest,
-      payload.workspaceKey,
-      payload.query,
-      accessToken
+    const response = yield call(
+      httpRequest().get,
+      urls.api.project.fetchProjects(payload.workspaceKey, toQueryParams(payload.query))
     );
 
-    if (response.ok) {
-      yield put(fetchProjectsSuccess(data.projects));
-
-      return;
-    }
-
-    yield put(fetchProjectsError(data.error));
+    yield put(fetchProjectsSuccess(response.projects));
   } catch (error) {
     console.error(error);
-    yield put(fetchProjectsError('request_error'));
+    yield put(fetchProjectsError(error.message));
   }
 }
 

@@ -27,8 +27,8 @@ export default class Project extends BaseModel {
   @Column({ name: 'name' })
   public name: string;
 
-  @Column({ name: 'description' })
-  public description: string;
+  @Column({ name: 'description', nullable: true })
+  public description?: string;
 
   @Column({ name: 'workspace_id' })
   public workspaceId: string;
