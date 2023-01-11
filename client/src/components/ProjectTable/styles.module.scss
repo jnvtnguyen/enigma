@@ -1,0 +1,21 @@
+.emptyState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.emptyStateContent {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.emptyStateHeader {
+  font-weight: lighter;
+  margin-bottom: 10px;
+}
+
+.buttonWrapper {
+  margin-top: 15px;
+}

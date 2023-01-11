@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { debounce } from 'lodash';
@@ -11,7 +11,7 @@ type Props = {
   onFilterChange: (filter: { search: string }) => void;
 };
 
-const DEBOUNCE_DELAY = 300;
+const DEBOUNCE_DELAY = 400;
 
 const ProjectsSearchFilter: React.FC<Props> = ({ search, onFilterChange }) => {
   const { t } = useTranslation();
@@ -22,7 +22,7 @@ const ProjectsSearchFilter: React.FC<Props> = ({ search, onFilterChange }) => {
     onFilterChange({ search });
   };
 
-  const debounceChange = debounce(notifyFilterChanged, DEBOUNCE_DELAY);
+  const debounceChange = useCallback(debounce(notifyFilterChanged, DEBOUNCE_DELAY), []);
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
     const value: string = e.currentTarget.value;

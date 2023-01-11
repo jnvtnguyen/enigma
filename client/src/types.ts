@@ -101,13 +101,6 @@ export interface AuthState {
   user: User;
 }
 
-//Project State
-export interface ProjectState {
-  projects: Project[];
-  loading: boolean;
-  error: string;
-}
-
 //Workspace State
 export interface WorkspaceState {
   workspace: Workspace;
@@ -119,7 +112,6 @@ export interface WorkspaceState {
 export interface RootState {
   auth: AuthState;
   workspace: WorkspaceState;
-  project: ProjectState;
 }
 
 //Actions
@@ -127,12 +119,6 @@ export interface RootState {
 export interface AuthenticateAction {
   type: typeof authenticate.type;
   payload: AuthenticationData;
-}
-
-//Project
-export interface FetchProjectsAction {
-  type: typeof fetchProjectsSuccess.type;
-  payload: FetchProjectsParams;
 }
 
 //Workspace

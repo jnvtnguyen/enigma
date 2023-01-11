@@ -1,5 +1,5 @@
 $error-color: #f25f25;
-$border-color: #c1c5c8;
+$border-color: rgba(9, 30, 66, 0.2);
 $border-focused-color: rgb(76, 154, 255);
 
 .label {
@@ -14,17 +14,22 @@ $border-focused-color: rgb(76, 154, 255);
 .inputWrapper {
   display: inline-flex;
   align-items: center;
-  border: 1px solid;
+  border: 2px solid;
   border-radius: 3px;
   border-color: $border-color;
   width: 100%;
   box-sizing: border-box;
-  background: white;
+  background-color: rgba(9, 30, 66, 0.03);
   cursor: text;
+  transition: background-color 0.2s ease-in-out 0s;
+}
+
+.inputWrapper:hover {
+  background-color: rgba(9, 30, 66, 0.1);
 }
 
 .small {
-  height: 34px;
+  height: 38px;
 }
 
 .normal {
@@ -33,6 +38,7 @@ $border-focused-color: rgb(76, 154, 255);
 
 .inputWrapper:focus-within {
   border-color: $border-focused-color;
+  background-color: white;
 }
 
 .innerInputWrapper {
@@ -49,11 +55,16 @@ $border-focused-color: rgb(76, 154, 255);
   align-items: center;
 }
 
+.elementAfterInput {
+  margin-inline-start: 8px;
+  display: flex;
+  align-items: center;
+}
+
 .inputPrefix {
   display: flex;
   align-items: center;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 0 10px;
   background: rgba(0, 0, 0, 0.08);
   border-radius: 3px 0px 0px 3px;
   font-size: 1em;
@@ -71,6 +82,7 @@ $border-focused-color: rgb(76, 154, 255);
   width: 100%;
   position: relative;
   height: 100%;
+  background-color: transparent;
 }
 
 .wrapper {

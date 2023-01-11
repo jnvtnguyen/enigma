@@ -1,19 +1,19 @@
-import React, { useMemo, useCallback, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useMemo, useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import qs from 'qs';
 
-import { getProjects, getProjectState } from '@/selectors/project';
-import { fetchProjects } from '@/slices/project';
-import { FetchProjectsFilters, FetchProjectsQuery } from '@/types';
+import { FetchProjectsFilters, FetchProjectsQuery, Project } from '@/types';
 import history from '@/util/history';
 import { parseQuery, toQueryParams } from './query';
 import { getCurrentWorkspace } from '@/selectors/workspace';
 import ProjectTable from '@/components/ProjectTable';
+import { httpRequest } from '@/util/http-request';
+import WorkspaceLayout from '@/containers/Workspace/WorkspaceLayout';
+import urls from '@/util/urls';
 import ProjectsFilters from './Filters';
 import styles from './styles.module.scss';
-import WorkspaceLayout from '../WorkspaceLayout';
 
 //Projects Query Hook
 interface UseProjectsQuery {
@@ -44,19 +44,34 @@ export const useProjectsQuery = (): UseProjectsQuery => {
 const Projects: React.FC = () => {
   const { t } = useTranslation();
 
-  const { loading, error } = useSelector(getProjectState);
-  const projects = useSelector(getProjects);
   const workspace = useSelector(getCurrentWorkspace);
 
-  const dispatch = useDispatch();
-
-  const _fetchProjects = (query: FetchProjectsQuery) =>
-    dispatch(fetchProjects({ workspaceKey: workspace.key, query: query }));
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>(null);
+  const [projects, setProjects] = useState<Project[]>([]);
 
   const { setQuery, query } = useProjectsQuery();
 
+  const getProjects = async () => {
+    setLoading(true);
+    try {
+      const response = await httpRequest<any>().get(
+        urls.api.project.fetchProjects(workspace.key, toQueryParams(query))
+      );
+
+      const { projects } = response;
+
+      setProjects(projects);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setError(error.message);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    _fetchProjects(query);
+    getProjects();
   }, [query]);
 
   const handleFilterChange = (filters: FetchProjectsFilters) => {

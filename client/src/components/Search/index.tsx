@@ -32,7 +32,7 @@ const Search: React.FC<Props> = ({
       onChange={onChange}
       onFocus={onFocus}
       onBlur={onBlur}
-      elementBeforeInput={<UilSearch size="16" />}
+      elementAfterInput={<UilSearch size="15" />}
       value={value || ''}
     />
   );

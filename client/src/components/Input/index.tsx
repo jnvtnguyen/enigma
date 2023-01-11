@@ -17,6 +17,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   prefix?: string;
   required?: boolean;
   elementBeforeInput?: ReactNode;
+  elementAfterInput?: ReactNode;
   size?: 'small' | 'normal';
 }
 
@@ -29,6 +30,7 @@ const Input = forwardRef<HTMLInputElement, Props>(
       prefix,
       required,
       elementBeforeInput,
+      elementAfterInput,
       onMouseDown,
       size = 'normal',
       ...props
@@ -100,6 +102,9 @@ const Input = forwardRef<HTMLInputElement, Props>(
                 <span className={styles.elementBeforeInput}>{elementBeforeInput}</span>
               )}
               <input ref={setInputRef} className={styles.input} {...props} />
+              {elementAfterInput && (
+                <span className={styles.elementAfterInput}>{elementAfterInput}</span>
+              )}
             </div>
           </div>
           {errorMessage && (
