@@ -9,12 +9,17 @@ type Props = {
   to?: string;
   text: string;
   links?: LinkType[];
+  suffixMatch?: boolean;
 };
 
-const SideNavigationLink: React.FC<Props> = ({ to, text, links }) => {
+const SideNavigationLink: React.FC<Props> = ({ to, text, links, suffixMatch = false }) => {
   const location = useLocation();
 
-  const contentClassNames = cn(styles.content, location.pathname == to && styles.contentSelected);
+  const contentClassNames = cn(
+    styles.content,
+    (location.pathname == to || (suffixMatch && location.pathname.includes(to))) &&
+      styles.contentSelected
+  );
 
   return (
     <div className={contentClassNames}>

@@ -17,11 +17,22 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   prefix?: string;
   required?: boolean;
   elementBeforeInput?: ReactNode;
+  size?: 'small' | 'normal';
 }
 
 const Input = forwardRef<HTMLInputElement, Props>(
   (
-    { label, error, errorMessage, prefix, required, elementBeforeInput, onMouseDown, ...props },
+    {
+      label,
+      error,
+      errorMessage,
+      prefix,
+      required,
+      elementBeforeInput,
+      onMouseDown,
+      size = 'normal',
+      ...props
+    },
     ref
   ) => {
     const inputRef = useRef<HTMLInputElement>(null);
@@ -29,7 +40,8 @@ const Input = forwardRef<HTMLInputElement, Props>(
     const wrapperClassNames = cn(
       styles.inputWrapper,
       error && styles.error,
-      prefix && styles.inputWithPrefix
+      prefix && styles.inputWithPrefix,
+      styles[size]
     );
 
     const handleMouseDown = useCallback(

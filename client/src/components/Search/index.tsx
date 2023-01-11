@@ -25,13 +25,14 @@ const Search: React.FC<Props> = ({
 }) => {
   return (
     <Input
+      size="small"
       name={name}
       label={label}
       placeholder={placeholder}
       onChange={onChange}
       onFocus={onFocus}
       onBlur={onBlur}
-      elementBeforeInput={<UilSearch size="18" />}
+      elementBeforeInput={<UilSearch size="16" />}
       value={value || ''}
     />
   );

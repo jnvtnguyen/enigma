@@ -35,7 +35,6 @@ const ProjectsSearchFilter: React.FC<Props> = ({ search, onFilterChange }) => {
     <div className={styles.searchFilter}>
       <Search
         name="projectsSearch"
-        label={t('Search projects')}
         placeholder={t('Search projects')}
         value={currentSearch}
         onChange={handleChange}

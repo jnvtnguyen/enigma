@@ -17,11 +17,18 @@ $border-focused-color: rgb(76, 154, 255);
   border: 1px solid;
   border-radius: 3px;
   border-color: $border-color;
-  height: 46px;
   width: 100%;
   box-sizing: border-box;
   background: white;
   cursor: text;
+}
+
+.small {
+  height: 34px;
+}
+
+.normal {
+  height: 44px;
 }
 
 .inputWrapper:focus-within {

@@ -14,6 +14,7 @@ type Props = {
   children: React.ReactNode;
   title: string;
   subTitle?: string;
+  actions?: React.ReactNode;
 };
 
 const WorkspaceLayout: React.FC<Props> = ({
@@ -22,7 +23,8 @@ const WorkspaceLayout: React.FC<Props> = ({
   workspace,
   children,
   title,
-  subTitle
+  subTitle,
+  actions
 }) => {
   return (
     <React.Fragment>
@@ -33,10 +35,14 @@ const WorkspaceLayout: React.FC<Props> = ({
             <BreadcrumbItem href={`/${workspace.key}`} text={`${workspace.name}`} />
             {breadcrumbs}
           </Breadcrumbs>
-          <h1 className={styles.header}>
-            {workspace.name} / {header}
-          </h1>
-          {subTitle && <h4 className={styles.subHeader}>{subTitle}</h4>}
+          <div className={styles.innerHeaderWrapper}>
+            <div>
+              <h1 className={styles.header}>{header}</h1>
+              {subTitle && <h4 className={styles.subHeader}>{subTitle}</h4>}
+            </div>
+
+            {actions && <div>{actions}</div>}
+          </div>
         </div>
         <div className={styles.contentLine}></div>
         <div className={styles.content}>

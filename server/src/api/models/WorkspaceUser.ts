@@ -14,6 +14,7 @@ import moment from 'moment';
 import BaseModel from './BaseModel';
 import Workspace from './Workspace';
 import WorkspaceGroup from './WorkspaceGroup';
+import User from './User';
 
 @Entity('workspace_user')
 export default class WorkspaceUser extends BaseModel {
@@ -32,6 +33,11 @@ export default class WorkspaceUser extends BaseModel {
   @ManyToOne((type) => Workspace)
   @JoinColumn({ name: 'workspace_id' })
   public workspace: Workspace;
+
+  @Exclude()
+  @ManyToOne((type) => User)
+  @JoinColumn({ name: 'user_id' })
+  public user: User;
 
   @Exclude()
   @ManyToMany((type) => WorkspaceGroup, (workspaceGroup) => workspaceGroup.users)

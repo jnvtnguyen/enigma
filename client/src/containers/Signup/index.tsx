@@ -13,7 +13,7 @@ const Signup: React.FC = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>(null);
 
   const handleSubmit = async (
     firstName: string,
@@ -23,6 +23,7 @@ const Signup: React.FC = () => {
   ) => {
     try {
       setLoading(true);
+      setError(null);
       await httpRequest<any>({ authorized: false }).post(urls.api.signup, {
         firstName,
         lastName,

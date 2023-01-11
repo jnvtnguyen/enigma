@@ -20,11 +20,12 @@ const Login: React.FC = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>(null);
 
   const handleSubmit = async (email: string, password: string) => {
     try {
       setLoading(true);
+      setError(null);
       const response = await httpRequest<any>({ authorized: false }).post(urls.api.login, {
         email,
         password

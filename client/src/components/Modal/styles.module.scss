@@ -1,0 +1,50 @@
+.blanket {
+  position: fixed;
+  z-index: 500;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: initial;
+  background-color: rgba(9, 30, 66, 0.54);
+}
+
+.modal {
+  position: absolute;
+  top: 75px;
+  margin-right: auto;
+  margin-left: auto;
+  right: 0px;
+  left: 0px;
+  display: flex;
+  width: 100%;
+  pointer-events: none;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  padding: 24px;
+}
+
+.headerText {
+  font-size: 24px;
+  font-weight: lighter;
+}
+
+.content {
+  background: #fff;
+  width: 600px;
+  margin-right: inherit;
+  margin-left: inherit;
+  border-radius: 3px;
+  pointer-events: auto;
+}
+
+.innerContent {
+  padding: 0 24px;
+}
+
+.footer {
+  padding: 24px;
+}

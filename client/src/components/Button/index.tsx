@@ -4,11 +4,18 @@ import cn from 'classnames';
 import styles from './styles.module.scss';
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
-  theme?: 'default';
+  theme?: 'default' | 'secondary';
+  size?: 'small' | 'normal';
 }
 
-const Button: React.FC<Props> = ({ children, theme = 'default', ...props }) => {
-  const buttonClassNames = cn(styles.button, styles[theme]);
+const Button: React.FC<Props> = ({
+  children,
+  theme = 'default',
+  size = 'normal',
+  className,
+  ...props
+}) => {
+  const buttonClassNames = cn(styles.button, styles[theme], styles[size], className);
 
   return (
     <button className={buttonClassNames} {...props}>

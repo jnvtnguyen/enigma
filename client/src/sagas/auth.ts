@@ -1,4 +1,4 @@
-import { all, takeLatest, call, select } from 'redux-saga/effects';
+import { all, takeLatest, call } from 'redux-saga/effects';
 
 import { authenticate, logout } from '@/slices/auth';
 import { AuthenticateAction } from '@/types';

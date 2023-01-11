@@ -7,6 +7,7 @@ export type Link = {
   to?: string;
   text: string;
   links?: Link[];
+  suffixMatch?: boolean;
 };
 
 type Props = {
@@ -22,7 +23,12 @@ const SideNavigation: React.FC<Props> = ({ header, links }) => {
           <div className={styles.linksContainer}>
             {links.map((link, index) => (
               <React.Fragment key={`side-navigation-component-${index}`}>
-                <SideNavigationLink to={link.to} text={link.text} links={link.links} />
+                <SideNavigationLink
+                  to={link.to}
+                  text={link.text}
+                  links={link.links}
+                  suffixMatch={link.suffixMatch}
+                />
               </React.Fragment>
             ))}
           </div>

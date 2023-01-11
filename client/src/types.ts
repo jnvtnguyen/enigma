@@ -39,6 +39,7 @@ export type ProjectPermission = 'read' | 'write' | 'admin';
 export interface WorkspaceGroup {
   id?: string;
   name: string;
+  description?: string;
   default_permission: ProjectPermission;
   userCount: number;
   createdDate: string;

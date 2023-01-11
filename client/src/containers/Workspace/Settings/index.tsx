@@ -14,7 +14,7 @@ const Settings: React.FC = () => {
   return (
     <React.Fragment>
       <WorkspaceLayout
-        header={t('Settings')}
+        header={t('Basic Settings')}
         workspace={workspace}
         title={t('Basic Settings')}
         breadcrumbs={

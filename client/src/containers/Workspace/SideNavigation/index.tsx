@@ -28,7 +28,8 @@ const WorkspaceSideNavigation: React.FC<Props> = ({ workspaceKey }) => {
         },
         {
           to: `/${workspaceKey}/groups`,
-          text: t('User Groups')
+          text: t('User Groups'),
+          suffixMatch: true
         }
       ]}
     />

@@ -10,21 +10,33 @@ import { WorkspaceGroup } from '@/types';
 import GroupTable from '@/components/GroupTable';
 import urls from './urls';
 import styles from './styles.module.scss';
+import Button from '@/components/Button';
+import CreateGroupModal from './Group/CreateGroupModal';
 
 const Groups: React.FC = () => {
   const { t } = useTranslation();
 
   const [groups, setGroups] = useState<WorkspaceGroup[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>(null);
+
+  const [createGroupModalOpen, setCreateGroupModalOpen] = useState<boolean>(false);
 
   const workspace = useSelector(getCurrentWorkspace);
 
   const getGroups = async (): Promise<WorkspaceGroup[]> => {
-    const response = await httpRequest<any>().get(urls.api.all(workspace.key));
-    const groups = response.groups;
+    const response = await httpRequest<any>().get(urls.api.groups(workspace.key));
+    const { groups } = response;
 
     return groups;
+  };
+
+  const openCreateGroupModal = () => {
+    setCreateGroupModalOpen(true);
+  };
+
+  const closeCreateGroupModal = () => {
+    setCreateGroupModalOpen(false);
   };
 
   useEffect(() => {
@@ -32,10 +44,12 @@ const Groups: React.FC = () => {
     const fetchGroups = async () => {
       try {
         const groups = await getGroups();
+
         setGroups(groups);
         setLoading(false);
       } catch (error) {
         console.error(error);
+
         setError(error.message);
         setLoading(false);
       }
@@ -51,6 +65,11 @@ const Groups: React.FC = () => {
         workspace={workspace}
         title={t('User Groups')}
         breadcrumbs={<BreadcrumbItem text={t('User Groups')} href={`/${workspace.key}/groups`} />}
+        actions={
+          <Button size="small" theme="secondary" onClick={openCreateGroupModal}>
+            {t('Create Group')}
+          </Button>
+        }
       >
         <div className={styles.content}>
           <GroupTable
@@ -61,6 +80,8 @@ const Groups: React.FC = () => {
           />
         </div>
       </WorkspaceLayout>
+
+      {createGroupModalOpen && <CreateGroupModal onClose={closeCreateGroupModal} />}
     </React.Fragment>
   );
 };

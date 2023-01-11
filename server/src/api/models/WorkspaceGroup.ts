@@ -32,6 +32,9 @@ export default class WorkspaceGroup extends BaseModel {
   @Column({ name: 'default_permission', type: 'enum', enum: ['read', 'write', 'admin'] })
   public default_permission: ProjectPermission;
 
+  @Column({ name: 'description', nullable: true })
+  public description?: string;
+
   @Exclude()
   @ManyToMany((type) => WorkspaceUser)
   @JoinTable({

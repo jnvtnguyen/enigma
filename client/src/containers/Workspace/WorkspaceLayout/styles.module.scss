@@ -9,11 +9,13 @@
 }
 
 .headerWrapper {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .header {
   font-weight: lighter;
+  margin-top: 5px;
+  font-size: 27px;
 }
 
 .subHeader {
@@ -38,4 +40,10 @@
 
 .innerContent {
   flex: 1 1 auto;
+}
+
+.innerHeaderWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Req, Res } from '@nestjs/common';
+import { Controller, Get, Param, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { instanceToPlain } from 'class-transformer';
 
@@ -18,7 +18,7 @@ export default class GroupsController {
         groups: instanceToPlain(groups)
       };
 
-      return response.send(successResponse);
+      return response.status(200).send(successResponse);
     } catch (error) {
       console.error(error);
       const errorResponse = {
@@ -26,7 +26,57 @@ export default class GroupsController {
         errorMessage: error
       };
 
-      return response.send(errorResponse);
+      return response.status(500).send(errorResponse);
+    }
+  }
+
+  @Get('/:groupName')
+  public async group(
+    @Param('groupName') groupName: string,
+    @Res() response: Response
+  ): Promise<any> {
+    try {
+      const group = await this.workspaceGroupService.findOneByName(groupName);
+
+      const successResponse = {
+        message: 'Find group successfully',
+        group: instanceToPlain(group)
+      };
+
+      return response.status(200).send(successResponse);
+    } catch (error) {
+      console.error(error);
+      const errorResponse = {
+        error: CommonError.UNKNOWN,
+        errorMessage: error
+      };
+
+      return response.status(500).send(errorResponse);
+    }
+  }
+
+  @Get('/:groupName/members')
+  public async members(
+    @Param('groupName') groupName: string,
+    @Res() response: Response
+  ): Promise<any> {
+    try {
+      const members = await this.workspaceGroupService.findMembersByName(groupName);
+
+      const successResponse = {
+        message: 'Find members successfully',
+        members: instanceToPlain(members)
+      };
+
+      return response.status(200).send(successResponse);
+    } catch (error) {
+      console.error(error);
+      const errorResponse = {
+        error: CommonError.UNKNOWN,
+        errorMessage: error
+      };
+
+      return response.status(500).send(errorResponse);
     }
   }
 }
