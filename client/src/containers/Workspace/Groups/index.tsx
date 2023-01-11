@@ -66,7 +66,7 @@ const Groups: React.FC = () => {
         title={t('User Groups')}
         breadcrumbs={<BreadcrumbItem text={t('User Groups')} href={`/${workspace.key}/groups`} />}
         actions={
-          <Button size="small" theme="secondary" onClick={openCreateGroupModal}>
+          <Button size="small" onClick={openCreateGroupModal}>
             {t('Create Group')}
           </Button>
         }
