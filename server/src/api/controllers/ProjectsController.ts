@@ -87,7 +87,7 @@ export default class ProjectsController {
 
       const successResponse = {
         message: 'Created project successfully',
-        project: instanceToPlain(newProject)
+        project: instanceToPlain(createProjectResponse)
       };
 
       return response.status(200).send(successResponse);

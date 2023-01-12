@@ -16,6 +16,10 @@ export enum CreateProjectError {
   KEY_DUPLICATE = 'key.duplicate'
 }
 
+export enum CreateGroupError {
+  NAME_DUPLICATE = 'name.duplicate'
+}
+
 export enum CreateWorkspaceError {
   KEY_DUPLICATE = 'key.duplicate'
 }

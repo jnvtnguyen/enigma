@@ -1,0 +1,19 @@
+$error-color: #f25f25;
+.label {
+  color: #474646;
+  font-size: 14px;
+  font-weight: 500;
+  display: block;
+  padding-bottom: 6px;
+  user-select: none;
+}
+
+.wrapper {
+  width: 100%;
+  padding: 4px 0 4px 0;
+}
+
+.requiredSymbol {
+  color: $error-color;
+  margin-left: 2px;
+}

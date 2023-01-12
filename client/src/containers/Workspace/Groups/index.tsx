@@ -7,11 +7,11 @@ import { getCurrentWorkspace } from '@/selectors/workspace';
 import BreadcrumbItem from '@/components/Breadcrumbs/BreadcrumbItem';
 import { httpRequest } from '@/util/http-request';
 import { WorkspaceGroup } from '@/types';
-import GroupTable from '@/components/GroupTable';
-import urls from './urls';
-import styles from './styles.module.scss';
 import Button from '@/components/Button';
-import CreateGroupModal from './Group/CreateGroupModal';
+import GroupTable from './GroupTable';
+import urls from './urls';
+import CreateGroupModal from './CreateGroupModal';
+import styles from './styles.module.scss';
 
 const Groups: React.FC = () => {
   const { t } = useTranslation();
@@ -50,7 +50,7 @@ const Groups: React.FC = () => {
       } catch (error) {
         console.error(error);
 
-        setError(error.message);
+        setError(error.error);
         setLoading(false);
       }
     };

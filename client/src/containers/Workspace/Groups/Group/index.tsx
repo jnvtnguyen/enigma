@@ -15,7 +15,7 @@ import styles from './styles.module.scss';
 const Group: React.FC = () => {
   const { t } = useTranslation();
 
-  const { groupName } = useParams();
+  const { groupKey } = useParams();
 
   const [group, setGroup] = useState<WorkspaceGroup>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -28,14 +28,14 @@ const Group: React.FC = () => {
   const workspace = useSelector(getCurrentWorkspace);
 
   const getGroup = async (): Promise<WorkspaceGroup> => {
-    const response = await httpRequest<any>().get(urls.api.group(workspace.key, groupName));
+    const response = await httpRequest<any>().get(urls.api.group(workspace.key, groupKey));
     const { group } = response;
 
     return group;
   };
 
   const getMembers = async (): Promise<User[]> => {
-    const response = await httpRequest<any>().get(urls.api.members(workspace.key, groupName));
+    const response = await httpRequest<any>().get(urls.api.members(workspace.key, groupKey));
     const { members } = response;
 
     return members;
@@ -51,7 +51,7 @@ const Group: React.FC = () => {
         setLoading(false);
       } catch (error) {
         console.error(error);
-        setError(error.message);
+        setError(error.error);
         setLoading(false);
       }
     };
@@ -63,7 +63,7 @@ const Group: React.FC = () => {
         setMembersLoading(false);
       } catch (error) {
         console.error(error);
-        setMembersError(error.message);
+        setMembersError(error.error);
         setMembersLoading(false);
       }
     };

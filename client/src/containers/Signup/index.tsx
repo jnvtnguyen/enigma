@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import PageMeta from '@/components/PageMeta';
-import SignupForm from '@/components/SignupForm';
 import urls from '@/util/urls';
 import { httpRequest } from '@/util/http-request';
+import SignupForm from './SignupForm';
 import authStyles from '@/containers/shared/auth.module.scss';
 
 const Signup: React.FC = () => {

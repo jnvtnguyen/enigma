@@ -48,7 +48,7 @@ const Workspace: React.FC = () => {
         <Route path="/settings" element={<SettingsLoadable />} />
         <Route path="/users" element={<UsersLoadable />} />
         <Route path="/groups" element={<GroupsLoadable />} />
-        <Route path="/groups/:groupName" element={<GroupLoadable />} />
+        <Route path="/groups/:groupKey" element={<GroupLoadable />} />
       </Routes>
     </React.Fragment>
   );

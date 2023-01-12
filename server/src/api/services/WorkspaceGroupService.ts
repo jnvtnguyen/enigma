@@ -33,14 +33,30 @@ export default class WorkspaceGroupService {
     return group;
   }
 
-  public async findMembersByName(name: string): Promise<User[]> {
+  public async findOneByKey(key: string): Promise<WorkspaceGroup> {
+    const group = await this.workspaceGroupRepository.findOne({
+      where: {
+        key: key
+      }
+    });
+
+    return group;
+  }
+
+  public async findMembersByKey(key: string): Promise<User[]> {
     const group = await this.workspaceGroupRepository.findOne({
       relations: ['users', 'users.user'],
       where: {
-        name: name
+        key: key
       }
     });
 
     return group.users.map((u) => u.user);
+  }
+
+  public async create(group: WorkspaceGroup): Promise<WorkspaceGroup> {
+    const groupResponse = await this.workspaceGroupRepository.save(group);
+
+    return groupResponse;
   }
 }

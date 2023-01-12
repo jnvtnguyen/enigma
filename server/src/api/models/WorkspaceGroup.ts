@@ -25,12 +25,15 @@ export default class WorkspaceGroup extends BaseModel {
   @Column({ name: 'name' })
   public name: string;
 
+  @Column({ name: 'key' })
+  public key: string;
+
   @Exclude()
   @Column({ name: 'workspace_id' })
   public workspaceId: string;
 
   @Column({ name: 'default_permission', type: 'enum', enum: ['read', 'write', 'admin'] })
-  public default_permission: ProjectPermission;
+  public defaultPermission: ProjectPermission;
 
   @Column({ name: 'description', nullable: true })
   public description?: string;

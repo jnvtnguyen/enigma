@@ -12,7 +12,7 @@ function* fetchWorkspaceSaga({ payload }: FetchWorkspaceAction): any {
     yield put(fetchWorkspaceSuccess(response.workspace));
   } catch (error) {
     console.error(error);
-    yield put(fetchWorkspaceError(error.message));
+    yield put(fetchWorkspaceError(error.error));
   }
 }
 

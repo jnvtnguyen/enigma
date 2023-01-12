@@ -59,17 +59,19 @@ export default class WorkspaceService {
 
     const newAdminWorkspaceGroup = new WorkspaceGroup();
     newAdminWorkspaceGroup.name = 'Administrators';
+    newAdminWorkspaceGroup.key = 'administrators';
     newAdminWorkspaceGroup.description =
       'This is the default created Administrators group and it gives users full access to both the workspace and its projects';
     newAdminWorkspaceGroup.workspaceId = createWorkspaceResponse.id;
-    newAdminWorkspaceGroup.default_permission = 'admin';
+    newAdminWorkspaceGroup.defaultPermission = 'admin';
 
     const newDefaultWorkspaceGroup = new WorkspaceGroup();
     newDefaultWorkspaceGroup.name = 'Default';
+    newDefaultWorkspaceGroup.key = 'default';
     newDefaultWorkspaceGroup.description =
       'This is the default created Default group and it is the default assigned group to new users and it allows only read access to the workspace and its projects';
     newDefaultWorkspaceGroup.workspaceId = createWorkspaceResponse.id;
-    newDefaultWorkspaceGroup.default_permission = 'read';
+    newDefaultWorkspaceGroup.defaultPermission = 'read';
 
     const newWorkspaceUser = new WorkspaceUser();
     newWorkspaceUser.userId = workspace.ownerId;

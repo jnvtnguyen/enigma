@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 
 import Modal from '@/components/Modal';
 import Button from '@/components/Button';
+import CreateGroupModalForm from './CreateGroupModalForm';
 import styles from './styles.module.scss';
-import CreateGroupModalForm from './Form';
 
 type Props = {
   onClose: () => void;
@@ -22,7 +22,7 @@ const CreateGroupModal: React.FC<Props> = ({ onClose }) => {
             {t('Cancel')}
           </Button>
           <Button size="small" className={styles.createButton}>
-            {t('Create')}
+            {t('Confirm')}
           </Button>
         </div>
       </div>

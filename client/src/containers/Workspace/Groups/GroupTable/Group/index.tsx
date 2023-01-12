@@ -29,7 +29,7 @@ const GroupTableRow: React.FC<Props> = ({ group, isDefault }) => {
   return (
     <BaseTableRow>
       <BaseTableCell>
-        <Link to={group.name.toLowerCase()}>{group.name}</Link>
+        <Link to={group.key}>{group.name}</Link>
         {isDefault && <Badge className={styles.badge} text={t('Default Group')} />}
       </BaseTableCell>
       <BaseTableCell>{getUsers()}</BaseTableCell>

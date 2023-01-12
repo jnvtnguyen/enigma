@@ -3,11 +3,11 @@ const urls = {
     groups: (workspaceKey: string) => {
       return `/api/workspaces/${workspaceKey}/groups`;
     },
-    group: (workspaceKey: string, groupName: string) => {
-      return `/api/workspaces/${workspaceKey}/groups/${groupName}`;
+    group: (workspaceKey: string, groupKey: string) => {
+      return `/api/workspaces/${workspaceKey}/groups/${groupKey}`;
     },
-    members: (workspaceKey: string, groupName: string) => {
-      return `/api/workspaces/${workspaceKey}/groups/${groupName}/members`;
+    members: (workspaceKey: string, groupKey: string) => {
+      return `/api/workspaces/${workspaceKey}/groups/${groupKey}/members`;
     }
   }
 };

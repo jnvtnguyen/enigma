@@ -4,10 +4,10 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
 import PageMeta from '@/components/PageMeta';
-import LoginForm from '@/components/LoginForm';
 import urls from '@/util/urls';
 import { authenticate } from '@/slices/auth';
 import { httpRequest } from '@/util/http-request';
+import LoginForm from './LoginForm';
 import authStyles from '@/containers/shared/auth.module.scss';
 
 const Login: React.FC = () => {

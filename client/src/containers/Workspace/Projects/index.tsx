@@ -8,11 +8,11 @@ import { FetchProjectsFilters, FetchProjectsQuery, Project } from '@/types';
 import history from '@/util/history';
 import { parseQuery, toQueryParams } from './query';
 import { getCurrentWorkspace } from '@/selectors/workspace';
-import ProjectTable from '@/components/ProjectTable';
 import { httpRequest } from '@/util/http-request';
 import WorkspaceLayout from '@/containers/Workspace/WorkspaceLayout';
 import urls from '@/util/urls';
 import ProjectsFilters from './Filters';
+import ProjectTable from './ProjectTable';
 import styles from './styles.module.scss';
 
 //Projects Query Hook
@@ -65,7 +65,7 @@ const Projects: React.FC = () => {
       setLoading(false);
     } catch (error) {
       console.error(error);
-      setError(error.message);
+      setError(error.error);
       setLoading(false);
     }
   };
